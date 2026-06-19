@@ -2,25 +2,41 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f1923;
+  
+  /* UDI Tokens */
+  --udi-navy: #002744;
+  --udi-navy2: #001d33;
+  --udi-gray: #8e8e8e;
+  --udi-light: #f4f4f2;
+  --udi-border: #d8dce2;
+  --udi-text: #0f1923;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-udi-navy: var(--udi-navy);
+  --color-udi-navy2: var(--udi-navy2);
+  --color-udi-gray: var(--udi-gray);
+  --color-udi-light: var(--udi-light);
+  --color-udi-border: var(--udi-border);
+  --color-udi-text: var(--udi-text);
+  
+  --font-montserrat: var(--font-montserrat);
+  --font-poppins: var(--font-poppins);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Base resets & utilities */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
 }
