@@ -7,7 +7,7 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const { data: d } = await supabase
     .from('programas')
-    .select('*')
+    .select('*, areas(nombre, color)')
     .eq('slug', resolvedParams.slug)
     .single();
 
@@ -28,7 +28,7 @@ export default async function DiplomaPage({ params }) {
   const resolvedParams = await params;
   const { data: d } = await supabase
     .from('programas')
-    .select('*')
+    .select('*, areas(nombre, color)')
     .eq('slug', resolvedParams.slug)
     .single();
 

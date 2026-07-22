@@ -6,15 +6,7 @@ import Link from "next/link";
 const DiplomaCard = ({ d }) => {
   const [hov, setHov] = useState(false);
 
-  const areaColors = {
-    "Tecnología": "#003087",
-    "Negocios y Servicios": "#1a4a5a",
-    "Ingeniería": "#2c3e50",
-    "Diseño y Creatividad": "#7b2d8b",
-    "Formación de Educadores": "#3d5a80",
-  };
-  
-  const ac = areaColors[d.area] || "#002744";
+  const ac = d.areas?.color || "#002744";
 
   return (
     <Link
@@ -35,7 +27,7 @@ const DiplomaCard = ({ d }) => {
             className="font-poppins text-[10px] font-semibold tracking-[2px] uppercase px-2.5 py-[3px] rounded-[2px]"
             style={{ color: ac, background: `${ac}18` }}
           >
-            {d.area}
+            {d.areas?.nombre || "Área General"}
           </span>
           <span className="font-poppins text-[11px] text-udi-gray tracking-[1px]">
             {d.modalidad} · {d.duracion}

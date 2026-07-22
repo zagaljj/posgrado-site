@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import SectionLabel from "@/components/SectionLabel";
-import { AREAS_DATA } from "@/data/diplomados";
+import { supabase } from "@/lib/supabase";
 
 const COLORS = [
   "#002744","#1a3a6b","#B81A1C","#2d5016","#1a4a5a",
@@ -16,27 +16,30 @@ export default function AdminAreas() {
   const [showModal, setShowModal] = useState(false);
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState({ nombre: "", color: COLORS[0], icono: "📚" });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("AREAS");
-    setAreas(saved ? JSON.parse(saved) : AREAS_DATA);
+    fetchAreas();
   }, []);
 
-  const save = (updated) => {
-    setAreas(updated);
-    localStorage.setItem("AREAS", JSON.stringify(updated));
+  const fetchAreas = async () => {
+    const { data, error } = await supabase.from('areas').select('*').order('id', { ascending: true });
+    if (!error && data) setAreas(data);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (editId) {
-      save(areas.map(a => a.id === editId ? { ...a, ...form } : a));
+      await supabase.from('areas').update(form).eq('id', editId);
     } else {
-      save([...areas, { ...form, id: Date.now() }]);
+      await supabase.from('areas').insert(form);
     }
+    await fetchAreas();
     setShowModal(false);
     setForm({ nombre: "", color: COLORS[0], icono: "📚" });
     setEditId(null);
+    setLoading(false);
   };
 
   const handleEdit = (a) => {
@@ -45,9 +48,10 @@ export default function AdminAreas() {
     setShowModal(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (!confirm("¿Eliminar esta área?")) return;
-    save(areas.filter(a => a.id !== id));
+    await supabase.from('areas').delete().eq('id', id);
+    await fetchAreas();
   };
 
   return (

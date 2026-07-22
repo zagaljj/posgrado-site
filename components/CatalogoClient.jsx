@@ -10,20 +10,17 @@ export default function CatalogoClient({ diplomados: initialData, title = "Catá
   const [area, setArea] = useState("Todas");
   const [modalidad, setModalidad] = useState("Todas");
 
-  useEffect(() => {
-    const saved = localStorage.getItem("DIPLOMADOS");
-    if (saved) setData(JSON.parse(saved));
-  }, []);
+  // Initial data loaded from server component
 
   const baseFiltered = useMemo(() => data.filter(d => (d.tipo || "Diplomado") === tipoFilter), [data, tipoFilter]);
 
-  const areas = ["Todas", ...new Set(baseFiltered.map((d) => d.area))];
+  const areas = ["Todas", ...new Set(baseFiltered.map((d) => d.areas?.nombre).filter(Boolean))];
   const modalidades = ["Todas", ...new Set(baseFiltered.map((d) => d.modalidad))];
 
   const filtered = useMemo(() => {
     return baseFiltered.filter((d) => {
       const matchSearch = d.titulo.toLowerCase().includes(search.toLowerCase());
-      const matchArea = area === "Todas" || d.area === area;
+      const matchArea = area === "Todas" || d.areas?.nombre === area;
       const matchMod = modalidad === "Todas" || d.modalidad === modalidad;
       return matchSearch && matchArea && matchMod;
     });

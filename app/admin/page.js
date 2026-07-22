@@ -3,17 +3,22 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import SectionLabel from "@/components/SectionLabel";
-import { DIPLOMADOS_DATA, AREAS_DATA } from "@/data/diplomados";
+import { supabase } from "@/lib/supabase";
 
 export default function AdminDashboard() {
-  const [diplomados, setDiplomados] = useState(DIPLOMADOS_DATA);
-  const [areas, setAreas] = useState(AREAS_DATA);
+  const [diplomados, setDiplomados] = useState([]);
+  const [areas, setAreas] = useState([]);
 
   useEffect(() => {
-    const savedDip = localStorage.getItem("DIPLOMADOS");
-    const savedAreas = localStorage.getItem("AREAS");
-    if (savedDip) setDiplomados(JSON.parse(savedDip));
-    if (savedAreas) setAreas(JSON.parse(savedAreas));
+    const fetchData = async () => {
+      const [dipRes, areasRes] = await Promise.all([
+        supabase.from('programas').select('*, areas(nombre, color)').order('created_at', { ascending: true }),
+        supabase.from('areas').select('*').order('nombre')
+      ]);
+      if (dipRes.data) setDiplomados(dipRes.data);
+      if (areasRes.data) setAreas(areasRes.data);
+    };
+    fetchData();
   }, []);
 
   const activos = diplomados.filter(d => d.activo).length;
@@ -82,7 +87,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-poppins text-sm font-bold text-udi-text truncate">{d.titulo}</div>
-                  <div className="font-poppins text-[11px] text-udi-gray">{d.area} · {d.modalidad}</div>
+                  <div className="font-poppins text-[11px] text-udi-gray">{d.areas?.nombre} · {d.modalidad}</div>
                 </div>
                 <div className="text-right flex-shrink-0">
                   <div className="font-montserrat font-black text-sm text-udi-navy">Bs. {d.precio.toLocaleString()}</div>
@@ -105,7 +110,7 @@ export default function AdminDashboard() {
           </div>
           <div className="space-y-2">
             {areas.slice(0, 8).map((a) => {
-              const count = diplomados.filter(d => d.area === a.nombre).length;
+              const count = diplomados.filter(d => d.area_id === a.id).length;
               return (
                 <div key={a.id} className="flex items-center gap-3 py-2">
                   <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: a.color }} />

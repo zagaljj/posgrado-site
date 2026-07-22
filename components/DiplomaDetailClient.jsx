@@ -45,7 +45,7 @@ const DiplomaDetailClient = ({ d: initialData }) => {
           
           <div className="max-w-[800px] mx-auto text-center relative z-10">
             <div className="flex items-center justify-center gap-3 mb-8">
-              <span className="font-poppins text-xs font-bold tracking-[3px] uppercase text-white/50">{d.area}</span>
+              <span className="font-poppins text-xs font-bold tracking-[3px] uppercase text-white/50">{d.areas?.nombre}</span>
               <div className="w-1 h-1 rounded-full bg-white/20" />
               <span className="font-poppins text-xs font-light tracking-[3px] uppercase text-white/50">{d.modalidad}</span>
             </div>

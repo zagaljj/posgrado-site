@@ -10,7 +10,7 @@ export default async function Home() {
   // Fetch destacados directly from DB on the server
   const { data: destacados } = await supabase
     .from('programas')
-    .select('*')
+    .select('*, areas(nombre, color)')
     .eq('destacado', true)
     .eq('activo', true)
     .limit(6);

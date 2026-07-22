@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react";
 import SectionLabel from "@/components/SectionLabel";
-import { AREAS_DATA } from "@/data/diplomados";
 import { supabase } from "@/lib/supabase";
 
 const EMPTY_FORM = {
-  titulo: "", tipo: "Diplomado", area: "Negocios y Servicios", modalidad: "Presencial", precio: 1500,
+  titulo: "", tipo: "Diplomado", area_id: "", modalidad: "Presencial", precio: 1500,
   estado_academico: "Disponible", duracion: "5 meses", horas: 200, inicio: "",
   descripcion: "", objetivos: ["", "", ""], docentes: ["", "", "", ""],
   destacado: false, activo: true, arte_url: "", brochure_url: "",
@@ -14,7 +13,7 @@ const EMPTY_FORM = {
 
 export default function AdminProgramas() {
   const [programas, setProgramas] = useState([]);
-  const [areas, setAreas] = useState(AREAS_DATA);
+  const [areas, setAreas] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -25,12 +24,18 @@ export default function AdminProgramas() {
 
   useEffect(() => {
     fetchProgramas();
+    fetchAreas();
   }, []);
+
+  const fetchAreas = async () => {
+    const { data } = await supabase.from('areas').select('*').order('nombre');
+    if (data) setAreas(data);
+  };
 
   const fetchProgramas = async () => {
     const { data, error } = await supabase
       .from('programas')
-      .select('*')
+      .select('*, areas(nombre, color)')
       .order('created_at', { ascending: false });
     
     if (error) {
@@ -82,6 +87,7 @@ export default function AdminProgramas() {
         objetivos: form.objetivos.filter(o => o.trim()),
         docentes: form.docentes.filter(d => d.trim()),
       };
+      delete clean.areas;
 
       if (arteFile) {
         clean.arte_url = await uploadFile(arteFile, 'artes');
@@ -196,7 +202,7 @@ export default function AdminProgramas() {
                   {p.destacado && <span className="text-[9px] font-poppins text-amber-600 font-bold uppercase tracking-[1px]">⭐ Destacado</span>}
                 </td>
                 <td className="p-4 font-poppins text-xs text-udi-gray font-medium">{p.tipo || "Diplomado"}</td>
-                <td className="p-4 font-poppins text-xs text-udi-navy font-semibold">{p.area}</td>
+                <td className="p-4 font-poppins text-xs text-udi-navy font-semibold">{p.areas?.nombre}</td>
                 <td className="p-4 font-poppins text-xs text-udi-gray">{p.modalidad}</td>
                 <td className="p-4 font-poppins text-sm font-bold text-udi-navy">Bs. {p.precio.toLocaleString()}</td>
                 <td className="p-4">
@@ -316,9 +322,10 @@ export default function AdminProgramas() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-gray">Área *</label>
-                  <select value={form.area} onChange={e => setForm({ ...form, area: e.target.value })}
+                  <select required value={form.area_id} onChange={e => setForm({ ...form, area_id: e.target.value ? parseInt(e.target.value) : "" })}
                     className="border border-udi-border px-4 py-3 font-poppins text-sm outline-none bg-white focus:border-udi-navy">
-                    {areas.map(a => <option key={a.id} value={a.nombre}>{a.icono} {a.nombre}</option>)}
+                    <option value="">Seleccionar área...</option>
+                    {areas.map(a => <option key={a.id} value={a.id}>{a.icono} {a.nombre}</option>)}
                   </select>
                 </div>
                 <div className="flex flex-col gap-2">
