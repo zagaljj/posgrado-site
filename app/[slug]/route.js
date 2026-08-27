@@ -8,6 +8,7 @@ const RESERVED = new Set([
   'cursos',
   'diplomados',
   'postitulos',
+  'gestor-landings',
   '_next',
   'favicon.ico',
   'assets',
@@ -21,7 +22,7 @@ export async function GET(req, { params }) {
     return new Response('Not Found', { status: 404 });
   }
 
-  const html = renderLandingPage(slug);
+  const html = await renderLandingPage(slug);
   if (!html) {
     return new Response(`Diplomado "${slug}" no encontrado`, { status: 404 });
   }

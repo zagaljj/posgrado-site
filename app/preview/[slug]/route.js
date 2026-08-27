@@ -3,7 +3,7 @@ import { renderLandingPage } from '../../../lib/landing-renderer';
 export async function GET(req, { params }) {
   const { slug } = await params;
 
-  const html = renderLandingPage(slug);
+  const html = await renderLandingPage(slug);
   if (!html) {
     return new Response(`Diplomado "${slug}" no encontrado`, { status: 404 });
   }
