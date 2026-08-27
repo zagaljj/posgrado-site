@@ -4,11 +4,7 @@ const nextConfig = {
     return [
       {
         source: '/adminlanding',
-        destination: '/adminlanding/index.html',
-      },
-      {
-        source: '/adminlanding/',
-        destination: '/adminlanding/index.html',
+        destination: '/adminlanding.html',
       },
     ];
   },
