@@ -2,7 +2,6 @@ import { renderLandingPage } from '../../lib/landing-renderer';
 
 const RESERVED = new Set([
   'admin',
-  'adminlanding',
   'api',
   'catalogo',
   'contacto',
