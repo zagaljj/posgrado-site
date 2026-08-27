@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diplomado en {{title}} — UDI Posgrado</title>
+  <meta name="description" content="{{subtitle}}. {{objetivoGeneral}}">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Diplomado en {{title}} — UDI Posgrado">
+  <meta property="og:description" content="{{subtitle}}">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="{{heroImageSrc}}">
+
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/landing.css?v=8">
+</head>
+<body>
+
+  <!-- ========== HERO (FULLSCREEN EDGE-TO-EDGE) ========== -->
+  <section class="hero" id="hero">
+    <div class="hero__bg">
+      <img src="{{heroImageSrc}}" alt="{{title}}" width="1920" height="1080" fetchpriority="high">
+    </div>
+    <div class="hero__overlay"></div>
+    
+    <!-- Top Header Brand Logo -->
+    <header class="hero__header">
+      <div class="container">
+        <a href="#hero" class="hero__logo-link">
+          <img src="assets/img/udi-logo.png" alt="UDI Universidad" class="hero__logo">
+        </a>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="hero__content">
+        <p class="hero__pretitle">DIPLOMADO EN</p>
+        <h1 class="hero__title">
+          <span class="hero__title-main">{{heroTitleMain}}</span>
+          <span class="hero__title-sub">{{heroTitleSub}}</span>
+        </h1>
+        <p class="hero__subtitle">{{subtitle}}</p>
+        <a href="#contacto" class="hero__cta">Conoce más aquí</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== OBJETIVO GENERAL ========== -->
+  <section class="objetivo section" id="objetivo">
+    <div class="container">
+      <!-- Heading overlapping -->
+      <div class="section-heading section-heading--overlapping">
+        <h2 class="heading-title">OBJETIVO</h2>
+        <span class="heading-script">GENERAL</span>
+      </div>
+
+      <div class="objetivo__grid">
+        <div class="objetivo__img-wrapper">
+          <img src="{{objetivoImageSrc}}" alt="Objetivo General" class="objetivo__img">
+        </div>
+        <div class="objetivo__content">
+          <p class="objetivo__text">{{objetivoGeneral}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DIRIGIDO A (TRANSLUCENT BG) ========== -->
+  <section class="dirigido section" id="dirigido">
+    <div class="dirigido__bg">
+      <img src="{{dirigidoBgSrc}}" alt="Fondo Dirigido A">
+    </div>
+    <div class="dirigido__overlay"></div>
+    <div class="container">
+      <div class="section-heading section-heading--white section-heading--overlapping">
+        <h2 class="heading-title">A quién está</h2>
+        <span class="heading-script">dirigido el programa?</span>
+      </div>
+
+      <div class="dirigido__card">
+        <p class="dirigido__text">{{dirigidoA}}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PLAN DE ESTUDIO + CARACTERÍSTICAS ========== -->
+  <section class="plan section" id="plan">
+    <div class="container">
+      <div class="section-heading section-heading--overlapping">
+        <h2 class="heading-title">PLAN DE</h2>
+        <span class="heading-script">Estudio</span>
+      </div>
+
+      <div class="plan__grid">
+        <!-- Módulos (Left) -->
+        <div class="plan__left">
+          <div class="plan__modules">
+            {{#modules}}
+            <div class="module-item">
+              <div class="module-item__info">
+                <span class="module-item__tag">MÓDULO {{moduleNumber}}</span>
+                <p class="module-item__name">{{moduleName}}</p>
+              </div>
+              <div class="module-item__dates-group">
+                <div class="module-item__date-pill">
+                  <span>📅 {{moduleDates}}</span>
+                </div>
+                {{#moduleSchedule}}
+                <div class="module-item__schedule-pill">
+                  <span>⏰ {{moduleSchedule}}</span>
+                </div>
+                {{/moduleSchedule}}
+              </div>
+            </div>
+            {{/modules}}
+          </div>
+        </div>
+
+        <!-- Características Card (Right) -->
+        <div class="plan__right">
+          <div class="caracteristicas-card">
+            <h3 class="caracteristicas-card__title">Características:</h3>
+
+            <div class="caract-item">
+              <div class="caract-item__icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+              </div>
+              <div class="caract-item__content">
+                <span class="caract-item__label">Inicio</span>
+                <span class="caract-item__val">{{fechaInicio}}</span>
+              </div>
+            </div>
+
+            <div class="caract-item">
+              <div class="caract-item__icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2h-4zM4 5h16v11H4V5z"/></svg>
+              </div>
+              <div class="caract-item__content">
+                <span class="caract-item__label">Modalidad</span>
+                <span class="caract-item__val">{{modalidad}}</span>
+              </div>
+            </div>
+
+            <div class="caract-item caract-item--horarios">
+              <div class="caract-item__icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+              </div>
+              <div class="caract-item__content">
+                <span class="caract-item__label">Horarios</span>
+                {{#horarios}}
+                <span class="caract-item__val">{{horarios}}</span>
+                {{/horarios}}
+              </div>
+            </div>
+
+            <!-- Schedule Pills -->
+            <div class="schedule-pills">
+              {{#schedules}}
+              <div class="schedule-pill">
+                <span class="schedule-pill__title">{{scheduleTitle}}</span>
+                <span class="schedule-pill__time">{{scheduleTime}}</span>
+              </div>
+              {{/schedules}}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PLANTEL DOCENTE (TRANSLUCENT BG) ========== -->
+  <section class="docentes section" id="docentes">
+    <div class="docentes__bg">
+      <img src="{{docentesBgSrc}}" alt="Fondo Docentes">
+    </div>
+    <div class="docentes__overlay"></div>
+    <div class="container">
+      <div class="section-heading section-heading--white section-heading--overlapping">
+        <h2 class="heading-title">Plantel</h2>
+        <span class="heading-script">Docente</span>
+      </div>
+
+      <div class="docentes__list">
+        {{#teachers}}
+        <article class="docente-row">
+          <div class="docente-card">
+            <h3 class="docente-card__name">{{teacherName}}</h3>
+            <p class="docente-card__bio">{{teacherBio}}</p>
+          </div>
+          <div class="docente-badges-group">
+            {{#teacherModules}}
+            <div class="docente-badge">
+              <span>{{moduleTitle}}</span>
+            </div>
+            {{/teacherModules}}
+          </div>
+        </article>
+        {{/teachers}}
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACTO / CTA (TRANSLUCENT BG) ========== -->
+  <section class="contacto section" id="contacto">
+    <div class="contacto__bg">
+      <img src="{{contactoBgSrc}}" alt="Fondo Contacto">
+    </div>
+    <div class="contacto__overlay"></div>
+    <div class="container">
+      <div class="contacto__grid">
+        <!-- Form (Left) -->
+        <div class="contacto__form-wrapper">
+          <h2 class="contacto__form-title">CONTÁCTANOS</h2>
+          
+          <form class="contacto__form" id="contact-form">
+            <input type="hidden" name="diplomadoSlug" value="{{slug}}">
+            <input type="hidden" name="diplomadoTitle" value="{{title}}">
+
+            <div class="form-group">
+              <label for="nombre">NOMBRE Y APELLIDO *</label>
+              <input type="text" id="nombre" name="name" placeholder="Tu nombre completo" required>
+            </div>
+
+            <div class="form-group">
+              <label for="correo">CORREO ELECTRÓNICO *</label>
+              <input type="email" id="correo" name="email" placeholder="correo@ejemplo.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="celular">NÚMERO DE CELULAR *</label>
+              <input type="tel" id="celular" name="phone" placeholder="+591 70000000" required>
+            </div>
+
+            <button type="submit" class="btn btn--submit" id="btn-submit">
+              ENVIAR
+            </button>
+            
+            <p class="form-status" id="form-status" style="display:none;"></p>
+          </form>
+
+          <!-- WhatsApp Direct Link -->
+          <div class="contacto__whatsapp">
+            <a href="https://wa.me/{{whatsappNumber}}?text={{whatsappMessage}}" target="_blank" rel="noopener noreferrer" class="btn btn--whatsapp">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+              Contactar por WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <!-- Info (Right) -->
+        <div class="contacto__info-wrapper">
+          <div class="contacto__info">
+            <h3 class="contacto__info-title">Más Información:</h3>
+
+            <div class="contacto-item">
+              <span class="contacto-item__icon">📍</span>
+              <div class="contacto-item__text">
+                <strong>UDI Universidad</strong>
+                <p>{{web}}</p>
+              </div>
+            </div>
+
+            <div class="contacto-item">
+              <span class="contacto-item__icon">✉️</span>
+              <div class="contacto-item__text">
+                <strong>Correo Electrónico</strong>
+                <p>{{email}}</p>
+              </div>
+            </div>
+
+            <div class="contacto-item">
+              <span class="contacto-item__icon">📱</span>
+              <div class="contacto-item__text">
+                <strong>Teléfono / WhatsApp</strong>
+                <p>{{phone}}</p>
+              </div>
+            </div>
+
+            <div class="contacto-item">
+              <span class="contacto-item__icon">🌐</span>
+              <div class="contacto-item__text">
+                <strong>Redes Sociales</strong>
+                <div class="contacto-socials">
+                  <a href="{{facebookUrl}}" target="_blank" rel="noopener">Facebook</a> |
+                  <a href="{{instagramUrl}}" target="_blank" rel="noopener">Instagram</a> |
+                  <a href="{{linkedinUrl}}" target="_blank" rel="noopener">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER BRAND ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <img src="assets/img/udi-logo.png" alt="UDI Posgrado" class="footer__logo">
+        <p class="footer__copy">&copy; 2026 UDI Universidad. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script for handling contact form submission -->
+  <script>
+    document.getElementById('contact-form')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit');
+      const status = document.getElementById('form-status');
+      const form = e.target;
+
+      btn.disabled = true;
+      btn.textContent = 'ENVIANDO...';
+      status.style.display = 'none';
+
+      const data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
+        diplomadoSlug: form.diplomadoSlug.value,
+        diplomadoTitle: form.diplomadoTitle.value,
+      };
+
+      try {
+        const res = await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const result = await res.json();
+        if (result.success) {
+          status.textContent = '¡Gracias por contactarnos! Nos pondremos en contacto contigo pronto.';
+          status.style.color = '#10b981';
+          status.style.display = 'block';
+          form.reset();
+        } else {
+          throw new Error();
+        }
+      } catch (err) {
+        status.textContent = 'Error al enviar el formulario. Inténtalo de nuevo o contáctanos por WhatsApp.';
+        status.style.color = '#ef4444';
+        status.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'ENVIAR';
+      }
+    });
+  </script>
+
+</body>
+</html>

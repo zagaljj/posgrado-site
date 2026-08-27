@@ -1,0 +1,12 @@
+[
+  {
+    "diplomado": "Full Stack Developer",
+    "name": "Juan Perez",
+    "email": "juan.perez@example.com",
+    "phone": "+591 70123456",
+    "message": "Hola, quiero saber precios.",
+    "timestamp": "2026-07-28T15:10:44.887Z",
+    "receivedAt": "2026-07-28T15:10:44.976Z",
+    "ip": "::1"
+  }
+]

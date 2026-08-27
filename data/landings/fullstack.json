@@ -1,0 +1,95 @@
+{
+  "id": "fullstack",
+  "slug": "fullstack",
+  "title": "Full Stack Developer",
+  "subtitle": "Conviértete en un desarrollador Full Stack",
+  "heroImage": "hero-fullstack.jpg",
+  "objetivoImage": "objetivo-fullstack.jpg",
+  "dirigidoBgImage": "dirigido-bg.png",
+  "docentesBgImage": "docentes-bg.png",
+  "contactoBgImage": "contacto-bg.png",
+  "objetivoGeneral": "Formar desarrolladores Full Stack capaces de integrarse a equipos profesionales, desarrollando, desplegando y manteniendo aplicaciones completas en entornos productivos. El programa enfatiza buenas prácticas de ingeniería de software, trabajo colaborativo, uso de servicios en la nube y herramientas de inteligencia artificial para mejorar la calidad y eficiencia del desarrollo.",
+  "dirigidoA": "Estudiantes, profesionales con conocimientos básicos de programación, desarrolladores junior y docentes del área tecnológica que deseen especializarse en desarrollo Full Stack y actualizarse en tecnologías modernas e inteligencia artificial aplicada al software.",
+  "fechaInicio": "02 de Septiembre",
+  "modalidad": "Virtual",
+  "horarios": "Martes y Jueves 19:00 - 21:00",
+  "schedule1Title": "Módulos 1 al 4",
+  "schedule1Time": "Lunes, Miércoles y Viernes de 19:30 a 22:00 hrs.",
+  "schedule2Title": "Módulo 5",
+  "schedule2Time": "Lunes, Miércoles y Jueves de 19:30 a 22:00 hrs.",
+  "whatsappNumber": "59170445618",
+  "whatsappMessage": "Hola, me interesa el Diplomado en Full Stack Developer",
+  "web": "www.udi.edu.bo",
+  "email": "posgrado@udi.edu.bo",
+  "phone": "+591 70445618",
+  "caracteristicas": {
+    "fechaInicio": "02 de Septiembre",
+    "modalidad": "Virtual",
+    "horarios": "Martes y Jueves 19:00 - 21:00"
+  },
+  "modules": [
+    {
+      "moduleNumber": "1",
+      "moduleName": "Fundamentos de Ingeniería de Software y Flujo de Trabajo Profesional",
+      "moduleDates": "Del 07 de Septiembre al 30 de Septiembre",
+      "moduleSchedule": "Lunes, Miércoles y Viernes de 19:30 a 22:00"
+    },
+    {
+      "moduleNumber": "2",
+      "moduleName": "Frontend Development",
+      "moduleDates": "Del 09 de Octubre al 30 de Octubre"
+    },
+    {
+      "moduleNumber": "3",
+      "moduleName": "Backend Development",
+      "moduleDates": "Del 04 de Noviembre al 25 de Noviembre"
+    },
+    {
+      "moduleNumber": "4",
+      "moduleName": "Cloud Computing, DevOps y Observabilidad",
+      "moduleDates": "Del 02 de Diciembre al 23 de Diciembre"
+    },
+    {
+      "moduleNumber": "5",
+      "moduleName": "Desarrollo Asistido por IA y Proyecto Integrador",
+      "moduleDates": "Del 04 de Enero al 21 de Enero"
+    }
+  ],
+  "teachers": [
+    {
+      "teacherName": "Marcelo Casanovas",
+      "teacherBio": "Líder Técnico en desarrollo de software con más de ocho años de experiencia, especializado en .NET Core, Blazor Server y Ciberseguridad. Ha liderado equipos y proyectos tecnológicos desarrollando soluciones seguras, escalables y de alta calidad en entornos ágiles.",
+      "teacherPhoto": "marcelo-casanovas.jpg",
+      "teacherModule": "Módulo I: Fundamentos de Ingeniería de Software y Flujo de Trabajo Profesional",
+      "teacherModule2": "Módulo III: Desarrollo Backend y Diseño de Servicios"
+    },
+    {
+      "teacherName": "Walter Torricos",
+      "teacherBio": "Ingeniero en Ciencias de la Computación y Staff Software Engineer con más de diez años de experiencia, especializado en tecnologías .NET, React y arquitecturas de microservicios. Cuenta con trayectoria en proyectos internacionales y formación de desarrolladores.",
+      "teacherPhoto": "walter-torricos.jpg",
+      "teacherModule": "Módulo II: Desarrollo Frontend Profesional"
+    },
+    {
+      "teacherName": "Oscar Javier Abuawad Lorite",
+      "teacherBio": "Ingeniero Informático con especialización en análisis y diseño de software. Cuenta con experiencia en consultoría de experiencia de usuario (UX), desarrollo de software y diseño de soluciones digitales enfocadas en la calidad y usabilidad.",
+      "teacherPhoto": "oscar-abuawad.jpg",
+      "teacherModule": "Módulo IV: Cloud Computing, DevOps y Observabilidad"
+    },
+    {
+      "teacherName": "Jaime Zagal Mazhicoa",
+      "teacherBio": "Especialista en Desarrollo Web y Aplicaciones Móviles, con formación en Ingeniería Informática y experiencia docente en tecnologías web, móviles y desarrollo Full Stack. Cuenta con conocimientos en React, Node.js, Python, servicios cloud y DevOps, además de formación en Educación Superior e Inteligencia Artificial aplicada a la educación.",
+      "teacherPhoto": "jaime-zagal.jpg",
+      "teacherModule": "Módulo V: Fundamentos de IS, Frontend, Backend, Cloud y Desarrollo IA"
+    }
+  ],
+  "contacto": {
+    "whatsapp": "59170445618",
+    "email": "posgrado@udi.edu.bo",
+    "web": "www.udi.edu.bo"
+  },
+  "social": {
+    "facebook": "",
+    "instagram": "",
+    "linkedin": ""
+  }
+}

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Landing Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="header__inner">
+      <div class="header__brand">
+        <span class="header__logo">LG</span>
+        <div>
+          <h1 class="header__title">Landing Generator</h1>
+          <p class="header__sub">UDI Posgrado</p>
+        </div>
+      </div>
+      <div class="header__actions">
+        <button class="btn btn--outline" id="btn-generate-all">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Generar todas
+        </button>
+        <button class="btn btn--primary" id="btn-new">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nuevo diplomado
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Diplomados List View -->
+    <section class="view" id="view-list">
+      <div class="view__header">
+        <h2 class="view__title">Diplomados</h2>
+        <p class="view__count" id="diplomado-count"></p>
+      </div>
+      <div class="cards-grid" id="diplomados-grid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="empty-state" id="empty-state" style="display:none">
+        <div class="empty-state__icon">📚</div>
+        <h3>No hay diplomados aún</h3>
+        <p>Creá tu primer diplomado para generar una landing page.</p>
+        <button class="btn btn--primary" id="btn-empty-new">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Crear diplomado
+        </button>
+      </div>
+    </section>
+
+    <!-- Editor View -->
+    <section class="view" id="view-editor" style="display:none">
+      <div class="view__header">
+        <button class="btn btn--ghost" id="btn-back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Volver
+        </button>
+        <div class="view__header-actions">
+          <button class="btn btn--outline" id="btn-preview">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Preview
+          </button>
+          <button class="btn btn--primary" id="btn-save">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Guardar
+          </button>
+        </div>
+      </div>
+
+      <form class="editor" id="editor-form" novalidate>
+
+        <!-- Basic Info -->
+        <fieldset class="editor__section">
+          <legend class="editor__legend">Información General</legend>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="ed-slug">Slug (URL)</label>
+              <input type="text" id="ed-slug" placeholder="fullstack" required pattern="[a-z0-9\-]+">
+              <span class="field__hint">Solo letras minúsculas, números y guiones</span>
+            </div>
+            <div class="field">
+              <label for="ed-title">Título del Diplomado</label>
+              <input type="text" id="ed-title" placeholder="Full Stack Developer" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="ed-title-main">Línea 1 Título Hero (Opcional)</label>
+              <input type="text" id="ed-title-main" placeholder="FULL STACK (automático si se deja vacío)">
+            </div>
+            <div class="field">
+              <label for="ed-title-sub">Línea 2 Título Hero (Opcional)</label>
+              <input type="text" id="ed-title-sub" placeholder="DEVELOPER (automático si se deja vacío)">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="ed-subtitle">Subtítulo</label>
+            <input type="text" id="ed-subtitle" placeholder="Conviértete en un desarrollador Full Stack">
+          </div>
+
+          <!-- Hero Image -->
+          <div class="field">
+            <label>Imagen Hero Principal</label>
+            <div class="upload-area" id="hero-upload-area">
+              <input type="file" id="ed-hero-file" accept="image/jpeg,image/png,image/webp" hidden>
+              <img id="hero-preview" class="upload-area__preview" style="display:none" alt="Hero preview">
+              <div class="upload-area__placeholder" id="hero-placeholder">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <p>Click o arrastrá una imagen aquí</p>
+                <span>JPG, PNG, WebP — Max 10MB</span>
+              </div>
+            </div>
+            <input type="hidden" id="ed-hero-filename">
+          </div>
+        </fieldset>
+
+        <!-- Imágenes de Secciones (Opcionales) -->
+        <fieldset class="editor__section">
+          <legend class="editor__legend">Fotos y Fondos Opcionales de Secciones</legend>
+
+          <div class="field-row">
+            <!-- Objetivo Image -->
+            <div class="field">
+              <label>Imagen Sección Objetivo General</label>
+              <div class="upload-area upload-area--small" id="objetivo-upload-area">
+                <input type="file" id="ed-objetivo-file" accept="image/jpeg,image/png,image/webp" hidden>
+                <img id="objetivo-preview" class="upload-area__preview" style="display:none" alt="Objetivo preview">
+                <div class="upload-area__placeholder" id="objetivo-placeholder">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                  <p>Click o arrastrá para subir imagen</p>
+                </div>
+              </div>
+              <input type="hidden" id="ed-objetivo-img">
+            </div>
+
+            <!-- Dirigido Bg Image -->
+            <div class="field">
+              <label>Fondo Sección "Dirigido A"</label>
+              <div class="upload-area upload-area--small" id="dirigido-upload-area">
+                <input type="file" id="ed-dirigido-file" accept="image/jpeg,image/png,image/webp" hidden>
+                <img id="dirigido-preview" class="upload-area__preview" style="display:none" alt="Dirigido A preview">
+                <div class="upload-area__placeholder" id="dirigido-placeholder">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                  <p>Click o arrastrá para subir fondo</p>
+                </div>
+              </div>
+              <input type="hidden" id="ed-dirigido-bg">
+            </div>
+          </div>
+
+          <div class="field-row">
+            <!-- Docentes Bg Image -->
+            <div class="field">
+              <label>Fondo Sección Plantel Docente</label>
+              <div class="upload-area upload-area--small" id="docentes-upload-area">
+                <input type="file" id="ed-docentes-file" accept="image/jpeg,image/png,image/webp" hidden>
+                <img id="docentes-preview" class="upload-area__preview" style="display:none" alt="Docentes preview">
+                <div class="upload-area__placeholder" id="docentes-placeholder">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                  <p>Click o arrastrá para subir fondo</p>
+                </div>
+              </div>
+              <input type="hidden" id="ed-docentes-bg">
+            </div>
+
+            <!-- Contacto Bg Image -->
+            <div class="field">
+              <label>Fondo Sección Contacto</label>
+              <div class="upload-area upload-area--small" id="contacto-upload-area">
+                <input type="file" id="ed-contacto-file" accept="image/jpeg,image/png,image/webp" hidden>
+                <img id="contacto-preview" class="upload-area__preview" style="display:none" alt="Contacto preview">
+                <div class="upload-area__placeholder" id="contacto-placeholder">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                  <p>Click o arrastrá para subir fondo</p>
+                </div>
+              </div>
+              <input type="hidden" id="ed-contacto-bg">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Content -->
+        <fieldset class="editor__section">
+          <legend class="editor__legend">Contenido</legend>
+
+          <div class="field">
+            <label for="ed-objetivo">Objetivo General</label>
+            <textarea id="ed-objetivo" rows="4" placeholder="Formar desarrolladores Full Stack..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="ed-dirigido">Dirigido A</label>
+            <textarea id="ed-dirigido" rows="3" placeholder="Todos los profesionales que..."></textarea>
+          </div>
+        </fieldset>
+
+        <!-- Características -->
+        <fieldset class="editor__section">
+          <legend class="editor__legend">Características y Horarios</legend>
+          <div class="field-row field-row--3">
+            <div class="field">
+              <label for="ed-fecha">Fecha de Inicio</label>
+              <input type="text" id="ed-fecha" placeholder="02 de Septiembre">
+            </div>
+            <div class="field">
+              <label for="ed-modalidad">Modalidad</label>
+              <input type="text" id="ed-modalidad" placeholder="Virtual">
+            </div>
+            <div class="field">
+              <label for="ed-horarios">Horarios Resumen</label>
+              <input type="text" id="ed-horarios" placeholder="Martes y Jueves 19:00 - 21:00">
+            </div>
+          </div>
+
+          <!-- Bloques de Horarios Dinámicos -->
+          <div style="margin-top: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+            <label style="font-weight: 600; color: #e4e4e7;">Bloques de Horarios (Detalle de Días y Horarios)</label>
+            <button type="button" class="btn btn--secondary btn--sm" id="btn-add-schedule" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">+ Agregar Bloque de Horario</button>
+          </div>
+          <div id="schedules-list" class="dynamic-list" style="margin-top: 0.8rem; display: flex; flex-direction: column; gap: 0.75rem;"></div>
+        </fieldset>
+
+        <!-- Módulos -->
+        <fieldset class="editor__section">
+          <legend class="editor__legend">
+            Plan de Estudio
+            <button type="button" class="btn btn--small btn--outline" id="btn-add-module">+ Módulo</button>
+          </legend>
+          <div class="dynamic-list" id="modules-list">
+            <!-- JS generates module rows -->
+          </div>
+        </fieldset>
+
+        <!-- Docentes -->
+        <fieldset class="editor__section">
+          <legend class="editor__legend">
+            Plantel Docente
+            <button type="button" class="btn btn--small btn--outline" id="btn-add-teacher">+ Docente</button>
+          </legend>
+          <div class="dynamic-list" id="teachers-list">
+            <!-- JS generates teacher rows -->
+          </div>
+        </fieldset>
+
+        <!-- Contacto -->
+        <fieldset class="editor__section">
+          <legend class="editor__legend">Contacto y Redes</legend>
+          <div class="field-row field-row--3">
+            <div class="field">
+              <label for="ed-whatsapp">WhatsApp</label>
+              <input type="text" id="ed-whatsapp" placeholder="+591 70445618">
+            </div>
+            <div class="field">
+              <label for="ed-email">Email</label>
+              <input type="email" id="ed-email" placeholder="posgrado@udi.edu.bo">
+            </div>
+            <div class="field">
+              <label for="ed-web">Sitio Web</label>
+              <input type="text" id="ed-web" placeholder="www.udi.edu.bo">
+            </div>
+          </div>
+          <div class="field-row field-row--3">
+            <div class="field">
+              <label for="ed-facebook">Facebook URL</label>
+              <input type="url" id="ed-facebook" placeholder="https://facebook.com/...">
+            </div>
+            <div class="field">
+              <label for="ed-instagram">Instagram URL</label>
+              <input type="url" id="ed-instagram" placeholder="https://instagram.com/...">
+            </div>
+            <div class="field">
+              <label for="ed-linkedin">LinkedIn URL</label>
+              <input type="url" id="ed-linkedin" placeholder="https://linkedin.com/...">
+            </div>
+          </div>
+        </fieldset>
+
+      </form>
+    </section>
+
+    <!-- Leads View -->
+    <section class="view" id="view-leads" style="display:none">
+      <div class="view__header">
+        <button class="btn btn--ghost" id="btn-back-leads">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Volver
+        </button>
+        <h2 class="view__title">Leads / Consultas</h2>
+      </div>
+      <div id="leads-table-container">
+        <!-- JS populates -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

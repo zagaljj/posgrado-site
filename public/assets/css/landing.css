@@ -1,0 +1,990 @@
+/* ============================================
+   Landing Page — Design System & Styles
+   UDI Posgrado Diplomados (Faithful Design Match)
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-navy-dark: #071224;
+  --color-navy: #082854;
+  --color-navy-card: #0c2f60;
+  --color-navy-badge: #132b50;
+  --color-white: #ffffff;
+  --color-gray-100: #f8fafc;
+  --color-gray-200: #e2e8f0;
+  --color-gray-600: #475569;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+  --color-whatsapp: #25d366;
+
+  --font-poppins: 'Poppins', system-ui, -apple-system, sans-serif;
+
+  --max-width: 1200px;
+  --radius-card: 28px;
+  --radius-pill: 50px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-poppins);
+  color: var(--color-gray-800);
+  background-color: var(--color-navy-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: 2rem;
+}
+
+.section {
+  padding-block: clamp(4rem, 8vw, 6.5rem);
+  width: 100%;
+  position: relative;
+}
+
+/* ---------- Overlapping Headings ---------- */
+.section-heading--overlapping {
+  position: relative;
+  margin-bottom: 3.5rem;
+  line-height: 0.9;
+}
+
+.section-heading--overlapping .heading-title {
+  font-family: var(--font-poppins);
+  font-size: clamp(3rem, 6.5vw, 5.2rem);
+  font-weight: 900;
+  font-style: normal;
+  color: #000000;
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  display: inline-block;
+}
+
+.section-heading--overlapping .heading-script {
+  display: block;
+  font-family: var(--font-poppins);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(3rem, 6.5vw, 5.2rem);
+  color: #000000;
+  line-height: 0.95;
+  margin-top: -0.15em;
+  margin-left: 2.2em;
+  letter-spacing: -0.02em;
+}
+
+.section-heading--white.section-heading--overlapping .heading-title {
+  color: #ffffff;
+}
+
+.section-heading--white.section-heading--overlapping .heading-script {
+  color: #ffffff;
+}
+
+/* ============================================
+   SECTION 1 — HERO
+   ============================================ */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 90vh;
+  min-height: 90dvh;
+  display: flex;
+  align-items: center;
+  color: var(--color-white);
+  background-color: var(--color-navy-dark);
+  overflow: hidden;
+  padding-block: 5rem;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    rgba(7, 18, 36, 0.88) 0%,
+    rgba(11, 26, 51, 0.78) 50%,
+    rgba(7, 18, 36, 0.65) 100%
+  );
+}
+
+.hero__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  padding-block: 1.75rem;
+}
+
+.hero__logo-link {
+  display: inline-block;
+}
+
+.hero__logo {
+  height: clamp(40px, 5vw, 56px);
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.4));
+}
+
+.hero .container {
+  position: relative;
+  z-index: 3;
+}
+
+.hero__content {
+  text-align: left;
+  max-width: 720px;
+}
+
+.hero__pretitle {
+  font-family: var(--font-poppins);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+
+.hero__title {
+  margin-bottom: 1rem;
+}
+
+.hero__title-main {
+  display: block;
+  font-family: var(--font-poppins);
+  font-size: clamp(3.2rem, 8vw, 5.8rem);
+  font-weight: 900;
+  font-style: normal;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--color-white);
+  text-transform: uppercase;
+}
+
+.hero__title-sub {
+  display: block;
+  font-family: var(--font-poppins);
+  font-style: italic;
+  font-size: clamp(3.2rem, 8vw, 5.8rem);
+  font-weight: 900;
+  line-height: 0.92;
+  color: var(--color-white);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin-top: -0.05em;
+}
+
+.hero__subtitle {
+  font-family: var(--font-poppins);
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 2.25rem;
+  opacity: 0.9;
+}
+
+.hero__cta {
+  display: inline-block;
+  padding: 0.85rem 2.6rem;
+  border: 2px solid var(--color-white);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-poppins);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-white);
+  transition: all 0.3s ease;
+}
+
+.hero__cta:hover {
+  background: var(--color-white);
+  color: var(--color-navy);
+}
+
+/* ============================================
+   SECTION 2 — OBJETIVO GENERAL
+   ============================================ */
+.objetivo {
+  background-color: var(--color-white);
+  width: 100%;
+}
+
+.objetivo__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .objetivo__grid {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 3.5rem;
+  }
+}
+
+.objetivo__img {
+  width: 100%;
+  border-radius: 32px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+}
+
+.objetivo__text {
+  font-family: var(--font-poppins);
+  font-size: clamp(1rem, 1.6vw, 1.12rem);
+  font-weight: 400;
+  line-height: 1.85;
+  color: #1f2937;
+}
+
+/* ============================================
+   SECTION 3 — DIRIGIDO A (TRANSLUCENT BG)
+   ============================================ */
+.dirigido {
+  position: relative;
+  width: 100%;
+  padding-block: clamp(4rem, 8vw, 6.5rem);
+  background: var(--color-navy-dark);
+}
+
+.dirigido__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.dirigido__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.55;
+  filter: brightness(0.95);
+}
+
+.dirigido__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(7, 18, 36, 0.55) 0%, rgba(11, 26, 51, 0.65) 100%);
+}
+
+.dirigido .container {
+  position: relative;
+  z-index: 3;
+}
+
+.dirigido__card {
+  background: var(--color-white);
+  border-radius: clamp(24px, 4vw, 40px);
+  padding: clamp(2.5rem, 5vw, 4rem);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  max-width: 980px;
+  margin-inline: auto;
+}
+
+.dirigido__title {
+  font-family: var(--font-poppins);
+  font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+  font-weight: 900;
+  color: #000000;
+  line-height: 1.08;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.dirigido__text {
+  font-family: var(--font-poppins);
+  font-size: clamp(1rem, 1.6vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.85;
+  color: #374151;
+}
+
+/* ============================================
+   SECTION 4 — PLAN DE ESTUDIO + CARACTERÍSTICAS
+   ============================================ */
+.plan {
+  background-color: var(--color-white);
+  width: 100%;
+}
+
+.plan__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 900px) {
+  .plan__grid {
+    grid-template-columns: 1.25fr 0.85fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+}
+
+.plan__modules {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.module-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+@media (min-width: 640px) {
+  .module-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.module-item__info {
+  flex: 1;
+}
+
+.module-item__tag {
+  display: block;
+  font-family: var(--font-poppins);
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #000000;
+  margin-bottom: 0.25rem;
+}
+
+.module-item__name {
+  font-family: var(--font-poppins);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.module-item__dates-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .module-item__dates-group {
+    width: 320px;
+  }
+}
+
+.module-item__date-pill,
+.module-item__schedule-pill {
+  border: 1.5px solid #1e293b;
+  border-radius: 50px;
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-poppins);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.module-item__schedule-pill {
+  background: rgba(30, 41, 59, 0.05);
+  border-color: rgba(30, 41, 59, 0.4);
+  font-size: 0.78rem;
+  color: #334155;
+}
+
+/* Características Card */
+.caracteristicas-card {
+  background: var(--color-navy);
+  color: var(--color-white);
+  border-radius: 28px;
+  padding: 2.5rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  box-shadow: 0 20px 50px rgba(8, 40, 84, 0.3);
+}
+
+.caracteristicas-card__title {
+  font-family: var(--font-poppins);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--color-white);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.caract-item {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.caract-item--horarios {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.caract-item__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.caract-item__icon svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--color-white);
+}
+
+.caract-item__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.caract-item__label {
+  font-family: var(--font-poppins);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-white);
+}
+
+.caract-item__val {
+  font-family: var(--font-poppins);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Schedule Pills */
+.schedule-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: -0.5rem;
+}
+
+.schedule-pill {
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 20px;
+  padding: 0.85rem 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.schedule-pill__title {
+  font-family: var(--font-poppins);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-white);
+}
+
+.schedule-pill__time {
+  font-family: var(--font-poppins);
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ============================================
+   SECTION 5 — PLANTEL DOCENTE (TRANSLUCENT BG)
+   ============================================ */
+.docentes {
+  position: relative;
+  background: var(--color-navy-dark);
+  color: var(--color-white);
+  width: 100%;
+  padding-block: clamp(4rem, 8vw, 6.5rem);
+}
+
+.docentes__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.docentes__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.55;
+  filter: brightness(0.95);
+}
+
+.docentes__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(7, 18, 36, 0.55) 0%, rgba(11, 26, 51, 0.65) 100%);
+}
+
+.docentes .container {
+  position: relative;
+  z-index: 3;
+}
+
+.docentes__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  max-width: 1050px;
+  margin-inline: auto;
+}
+
+.docente-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .docente-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.75rem;
+  }
+
+  .docente-row:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+}
+
+.docente-card {
+  flex: 1;
+  background: var(--color-white);
+  color: var(--color-navy);
+  border-radius: 28px;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.docente-card__name {
+  font-family: var(--font-poppins);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #000000;
+  margin-bottom: 0.4rem;
+}
+
+.docente-card__bio {
+  font-family: var(--font-poppins);
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: #374151;
+}
+
+.docente-badges-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 260px;
+  max-width: 340px;
+}
+
+@media (max-width: 767px) {
+  .docente-badges-group {
+    max-width: 100%;
+  }
+}
+
+.docente-badge {
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 18px;
+  padding: 1rem 1.5rem;
+  background: rgba(11, 26, 51, 0.6);
+  backdrop-filter: blur(10px);
+  color: var(--color-white);
+  font-family: var(--font-poppins);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ============================================
+   SECTION 6 — CONTACTO / CTA (TRANSLUCENT BG)
+   ============================================ */
+.contacto {
+  position: relative;
+  isolation: isolate;
+  background: var(--color-navy-dark);
+  width: 100%;
+  padding-block: clamp(4rem, 8vw, 6.5rem);
+}
+
+.contacto__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.contacto__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.45;
+  filter: brightness(0.85);
+}
+
+.contacto__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(7, 18, 36, 0.75) 0%, rgba(11, 26, 51, 0.85) 100%);
+}
+
+.contacto .container {
+  position: relative;
+  z-index: 3;
+}
+
+.contacto__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: stretch;
+}
+
+@media (min-width: 900px) {
+  .contacto__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem;
+  }
+}
+
+/* Left Card: Form */
+.contacto__form-wrapper {
+  background: #ffffff;
+  color: var(--color-navy);
+  border-radius: 28px;
+  padding: clamp(2rem, 4vw, 3rem);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.contacto__form-title {
+  font-family: var(--font-poppins);
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  font-weight: 900;
+  color: #000000;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.contacto__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-family: var(--font-poppins);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.9rem 1.4rem;
+  border: 1.5px solid #000000;
+  border-radius: 50px;
+  font-family: var(--font-poppins);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #111827;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #082854;
+  box-shadow: 0 0 0 3px rgba(8, 40, 84, 0.2);
+}
+
+.btn--submit {
+  width: 100%;
+  padding: 1.05rem;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  font-family: var(--font-poppins);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.btn--submit:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
+.contacto__whatsapp {
+  margin-top: 1rem;
+}
+
+.btn--whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.95rem;
+  background: #25d366;
+  color: #ffffff;
+  border-radius: 50px;
+  font-family: var(--font-poppins);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.btn--whatsapp:hover {
+  background: #20ba5a;
+  transform: translateY(-1px);
+}
+
+.form-status {
+  margin-top: 0.8rem;
+  font-family: var(--font-poppins);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Right Card: Info */
+.contacto__info-wrapper {
+  background: rgba(11, 26, 51, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 28px;
+  padding: clamp(2rem, 4vw, 3rem);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.contacto__info-title {
+  font-family: var(--font-poppins);
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 1.8rem;
+  letter-spacing: -0.01em;
+}
+
+.contacto-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.contacto-item:last-child {
+  margin-bottom: 0;
+}
+
+.contacto-item__icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.contacto-item__text strong {
+  display: block;
+  font-family: var(--font-poppins);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.contacto-item__text p {
+  font-family: var(--font-poppins);
+  font-size: 0.92rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.contacto-socials {
+  display: flex;
+  gap: 0.6rem;
+  font-family: var(--font-poppins);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+  margin-top: 0.25rem;
+}
+
+.contacto-socials a {
+  color: #38bdf8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contacto-socials a:hover {
+  color: #7dd3fc;
+  text-decoration: underline;
+}
+
+/* ============================================
+   SECTION 7 — FOOTER
+   ============================================ */
+.footer {
+  background: var(--color-navy-dark);
+  color: var(--color-white);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-block: 1.75rem;
+  width: 100%;
+}
+
+.footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.footer__info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--font-poppins);
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.footer__info a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer__info svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer__logo {
+  height: clamp(36px, 4vw, 48px);
+  width: auto;
+  object-fit: contain;
+}
