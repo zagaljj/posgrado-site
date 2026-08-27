@@ -730,5 +730,5 @@
     loadDiplomados();
   }
 
-  document.addEventListener('DOMContentLoaded', init);
+  if (document.readyState === 'complete' || document.readyState === 'interactive') { init(); } else { document.addEventListener('DOMContentLoaded', init); }
 })();
