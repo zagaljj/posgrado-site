@@ -86,7 +86,7 @@ const ADMIN_HTML = `
                   <p>Click o arrastrá para subir imagen</p>
                 </div>
               </div>
-              <input type="hidden" id="ed-hero-img">
+              <input type="hidden" id="ed-hero-filename">
             </div>
 
             <div class="field">
