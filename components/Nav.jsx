@@ -77,11 +77,9 @@ const Nav = () => {
           })}
           
           <Link
-            href="/admin"
+            href="/gestor-landings"
             className="ml-6 border border-white/30 font-poppins text-[11px] font-medium tracking-[2px] uppercase text-white/75 px-[18px] py-2 rounded-[2px] hover:bg-white/10 hover:border-white/60 transition-all"
-          >
-            Admin
-          </Link>
+          >Gestor Landings</Link>
         </div>
 
         {/* Mobile Toggle Button */}
@@ -126,12 +124,10 @@ const Nav = () => {
           <div className="w-8 h-px bg-white/20 my-2" />
           
           <Link
-            href="/admin"
+            href="/gestor-landings"
             onClick={() => setIsOpen(false)}
             className="self-start border border-white/30 font-poppins text-[11px] font-medium tracking-[2px] uppercase text-white/75 px-[18px] py-2.5 rounded-[2px] hover:bg-white/10 transition-all"
-          >
-            Panel Admin
-          </Link>
+          >Gestor Landings</Link>
         </div>
       </div>
     </nav>

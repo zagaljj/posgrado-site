@@ -112,6 +112,7 @@ export default function AdminLayout({ children }) {
     { label: "Dashboard", href: "/admin", icon: "📊" },
     { label: "Diplomados", href: "/admin/programas", icon: "📚" },
     { label: "Áreas", href: "/admin/areas", icon: "🗂️" },
+    { label: "Gestor Landings", href: "/gestor-landings", icon: "🚀" },
   ];
 
   return (
