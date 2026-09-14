@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 
 const SESSION_COOKIE = 'gestor_session';
-const SESSION_SECRET = process.env.GESTOR_SESSION_SECRET || 'udi-gestor-2025';
+// See lib/gestor-session.js — fail closed in production when unset.
+const SESSION_SECRET = process.env.GESTOR_SESSION_SECRET
+  || (process.env.NODE_ENV === 'production' ? undefined : 'udi-gestor-2025');
 
 export function middleware(request) {
   const { pathname } = request.nextUrl;
