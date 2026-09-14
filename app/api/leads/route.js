@@ -1,17 +1,18 @@
-import fs from 'fs';
-import path from 'path';
+import { supabase } from '../../../lib/supabase';
 import { requireGestorSession } from '../../../lib/gestor-session';
-
-const LEADS_FILE = path.join(process.cwd(), 'data', 'landings', '_leads.json');
 
 export async function GET() {
   const denied = await requireGestorSession();
   if (denied) return denied;
 
   try {
-    if (!fs.existsSync(LEADS_FILE)) return Response.json([]);
-    const leads = JSON.parse(fs.readFileSync(LEADS_FILE, 'utf-8'));
-    return Response.json(leads);
+    const { data, error } = await supabase
+      .from('leads')
+      .select('*')
+      .order('received_at', { ascending: false });
+
+    if (error) return Response.json([]);
+    return Response.json(data || []);
   } catch (err) {
     return Response.json([]);
   }
@@ -23,19 +24,18 @@ export async function GET() {
 export async function POST(req) {
   try {
     const body = await req.json();
-    const lead = {
-      ...body,
-      receivedAt: new Date().toISOString(),
-    };
 
-    let leads = [];
-    try {
-      if (fs.existsSync(LEADS_FILE)) {
-        leads = JSON.parse(fs.readFileSync(LEADS_FILE, 'utf-8'));
-      }
-      leads.push(lead);
-      fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2), 'utf-8');
-    } catch (e) {}
+    const { error } = await supabase.from('leads').insert({
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      diplomado_slug: body.diplomadoSlug,
+      diplomado_title: body.diplomadoTitle,
+    });
+
+    if (error) {
+      return Response.json({ error: error.message }, { status: 500 });
+    }
 
     return Response.json({ success: true });
   } catch (err) {
