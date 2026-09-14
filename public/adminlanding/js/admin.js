@@ -728,6 +728,15 @@
     // Upload dropzones
     initUploadDropzones();
 
+    // Logout button
+    const logoutBtn = $('#btn-logout');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async () => {
+        await fetch('/api/gestor-auth', { method: 'DELETE' });
+        window.location.href = '/gestor-landings/login';
+      });
+    }
+
     // Check if opened with ?slug= query parameter
     const urlParams = new URLSearchParams(window.location.search);
     const slugParam = urlParams.get("slug");
