@@ -711,10 +711,17 @@
 
   // ---------- Event bindings ----------
   function init() {
+    // Guard: if key DOM elements aren't available yet, retry
+    if (!$('#btn-new') || !$('#btn-save')) {
+      console.warn('[admin] DOM not ready yet, retrying init in 50ms...');
+      setTimeout(init, 50);
+      return;
+    }
+
     // Navigation
-    $('#btn-new').addEventListener('click', () => openEditor(null));
+    $('#btn-new')?.addEventListener('click', () => openEditor(null));
     $('#btn-empty-new')?.addEventListener('click', () => openEditor(null));
-    $('#btn-back').addEventListener('click', () => {
+    $('#btn-back')?.addEventListener('click', () => {
       if (window.location.search) {
         window.history.replaceState({}, document.title, window.location.pathname);
       }
@@ -722,16 +729,16 @@
       $('#ed-slug').disabled = false;
       loadDiplomados();
     });
-    $('#btn-back-leads').addEventListener('click', () => {
+    $('#btn-back-leads')?.addEventListener('click', () => {
       showView(viewList);
       loadDiplomados();
     });
 
     // Editor actions
-    $('#btn-save').addEventListener('click', saveDiplomado);
-    $('#btn-preview').addEventListener('click', generateCurrent);
-    $('#btn-add-module').addEventListener('click', () => addModule());
-    $('#btn-add-teacher').addEventListener('click', () => addTeacher());
+    $('#btn-save')?.addEventListener('click', saveDiplomado);
+    $('#btn-preview')?.addEventListener('click', generateCurrent);
+    $('#btn-add-module')?.addEventListener('click', () => addModule());
+    $('#btn-add-teacher')?.addEventListener('click', () => addTeacher());
     $('#btn-add-schedule')?.addEventListener('click', () => addScheduleBlock());
 
     // Generate all
