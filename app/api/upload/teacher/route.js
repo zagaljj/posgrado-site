@@ -1,4 +1,9 @@
+import { requireGestorSession } from '../../../../lib/gestor-session';
+
 export async function POST(req) {
+  const denied = await requireGestorSession();
+  if (denied) return denied;
+
   try {
     const formData = await req.formData();
     const file = formData.get('photo');

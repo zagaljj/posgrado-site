@@ -1,6 +1,10 @@
 import { getAllDiplomados, saveDiplomado } from '../../../lib/supabase-landings';
+import { requireGestorSession } from '../../../lib/gestor-session';
 
 export async function GET() {
+  const denied = await requireGestorSession();
+  if (denied) return denied;
+
   const all = await getAllDiplomados();
   const result = all.map((data) => ({
     slug: data.slug,
@@ -16,6 +20,9 @@ export async function GET() {
 }
 
 export async function POST(req) {
+  const denied = await requireGestorSession();
+  if (denied) return denied;
+
   try {
     const data = await req.json();
     if (!data.slug || !data.title) {

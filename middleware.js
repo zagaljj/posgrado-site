@@ -6,8 +6,14 @@ const SESSION_SECRET = process.env.GESTOR_SESSION_SECRET || 'udi-gestor-2025';
 export function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // Only protect /gestor-landings, not the login page itself
-  if (pathname.startsWith('/gestor-landings') && !pathname.startsWith('/gestor-landings/login')) {
+  // Protect /gestor-landings (except its own login page) and /admin.
+  // Mirrors the session check in lib/gestor-session.js — kept duplicated
+  // here because edge middleware cannot import next/headers.
+  const isProtectedPath =
+    (pathname.startsWith('/gestor-landings') && !pathname.startsWith('/gestor-landings/login')) ||
+    pathname.startsWith('/admin');
+
+  if (isProtectedPath) {
     const session = request.cookies.get(SESSION_COOKIE);
 
     if (!session || session.value !== SESSION_SECRET) {
@@ -23,5 +29,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/gestor-landings', '/gestor-landings/:path*'],
+  matcher: ['/gestor-landings', '/gestor-landings/:path*', '/admin', '/admin/:path*'],
 };
