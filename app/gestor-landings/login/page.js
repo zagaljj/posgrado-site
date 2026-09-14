@@ -9,12 +9,14 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [statusText, setStatusText] = useState('');
   const searchParams = useSearchParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+    setStatusText('Verificando credenciales...');
 
     try {
       const res = await fetch('/api/gestor-auth', {
@@ -26,21 +28,38 @@ function LoginForm() {
       const result = await res.json();
 
       if (result.success) {
+        setStatusText('Iniciando sesión y preparando gestor...');
         const slug = searchParams.get('slug');
         const dest = slug ? `/gestor-landings?slug=${encodeURIComponent(slug)}` : '/gestor-landings';
         window.location.href = dest;
       } else {
         setError(result.error || 'Credenciales incorrectas');
+        setLoading(false);
       }
     } catch (err) {
       setError('Error de conexión. Intentá de nuevo.');
-    } finally {
       setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-[#09090b] flex items-center justify-center px-6 relative overflow-hidden">
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="fixed inset-0 z-50 bg-[#09090b]/85 backdrop-blur-md flex flex-col items-center justify-center gap-4 transition-all">
+          <div className="relative flex items-center justify-center">
+            <div className="w-14 h-14 border-3 border-white/10 border-t-indigo-500 rounded-full animate-spin" />
+            <span className="absolute font-mono text-xs font-bold text-white/60">LG</span>
+          </div>
+          <div className="text-center">
+            <p className="text-white font-medium text-sm tracking-wide animate-pulse">
+              {statusText}
+            </p>
+            <p className="text-white/40 text-xs mt-1">Gestor de Landings · UDI Posgrado</p>
+          </div>
+        </div>
+      )}
+
       {/* Background grid */}
       <div className="absolute inset-0 opacity-[0.04]" style={{
         backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
@@ -68,10 +87,11 @@ function LoginForm() {
               <input
                 type="email"
                 required
+                disabled={loading}
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="admin@udi.edu.bo"
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm outline-none placeholder:text-white/20 focus:border-indigo-500 focus:bg-white/8 transition-all"
+                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm outline-none placeholder:text-white/20 focus:border-indigo-500 focus:bg-white/8 transition-all disabled:opacity-50"
               />
             </div>
 
@@ -80,10 +100,11 @@ function LoginForm() {
               <input
                 type="password"
                 required
+                disabled={loading}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm outline-none placeholder:text-white/20 focus:border-indigo-500 focus:bg-white/8 transition-all"
+                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm outline-none placeholder:text-white/20 focus:border-indigo-500 focus:bg-white/8 transition-all disabled:opacity-50"
               />
             </div>
 
@@ -96,12 +117,16 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="mt-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
             >
-              {loading && (
-                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              {loading ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Procesando...</span>
+                </>
+              ) : (
+                'Ingresar al gestor →'
               )}
-              {loading ? 'Verificando...' : 'Ingresar al gestor →'}
             </button>
           </form>
         </div>

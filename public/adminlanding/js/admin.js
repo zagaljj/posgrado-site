@@ -33,6 +33,27 @@
   }
 
   // ---------- Toast ----------
+
+  // ---------- Global Loader ----------
+  function hideGlobalLoader() {
+    const loader = $("#gestor-global-loader");
+    if (loader) {
+      loader.style.opacity = "0";
+      setTimeout(() => { loader.style.display = "none"; }, 200);
+    }
+  }
+
+  function showGlobalLoader(text) {
+    const loader = $("#gestor-global-loader");
+    const textEl = $("#gestor-loader-text");
+    if (loader) {
+      if (textEl && text) textEl.textContent = text;
+      loader.style.display = "flex";
+      loader.style.opacity = "1";
+    }
+  }
+
+
   function showToast(message, type = 'success') {
     toast.textContent = message;
     toast.className = `toast toast--${type} is-visible`;
@@ -57,12 +78,14 @@
     if (data.length === 0) {
       diplomadosGrid.style.display = 'none';
       emptyState.style.display = '';
+      hideGlobalLoader();
       return;
     }
 
     diplomadosGrid.style.display = '';
     emptyState.style.display = 'none';
 
+    hideGlobalLoader();
     diplomadosGrid.innerHTML = data
       .map(
         (d) => `
@@ -124,6 +147,7 @@
     teacherCount = 0;
     modulesList.innerHTML = '';
     teachersList.innerHTML = '';
+    hideGlobalLoader();
     showView(viewEditor);
 
     // Reset form
@@ -430,7 +454,8 @@
       });
       const result = await res.json();
 
-      if (result.success) {
+      hideGlobalLoader();
+    if (result.success) {
         photoThumb.src = result.path;
         fotoValue.value = result.filename;
         showToast('Foto subida');
@@ -570,6 +595,7 @@
 
   // ---------- Save ----------
   async function saveDiplomado() {
+    showGlobalLoader("Guardando diplomado...");
     const data = collectEditorData();
 
     if (!data.slug || !data.title) {
@@ -716,7 +742,8 @@
         showToast('Todas las landings generadas');
         loadDiplomados();
       } else {
-        showToast('Error: ' + (result.error || ''), 'error');
+        hideGlobalLoader();
+      showToast('Error: ' + (result.error || ''), 'error');
       }
       btn.disabled = false;
       btn.innerHTML = `

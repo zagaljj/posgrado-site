@@ -4,6 +4,23 @@ import { useEffect } from 'react';
 const ADMIN_HTML = `
   <link rel="stylesheet" href="/adminlanding/css/admin.css">
 
+  <div id="gestor-global-loader" style="position: fixed; inset: 0; z-index: 1000000; background: rgba(9,9,11,0.88); backdrop-filter: blur(8px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.2s ease;">
+    <div style="position: relative; display: flex; align-items: center; justify-content: center;">
+      <div style="width: 48px; height: 48px; border: 3px solid rgba(255,255,255,0.12); border-top-color: #6366f1; border-radius: 50%; animation: gestorSpin 0.75s linear infinite;"></div>
+      <span style="position: absolute; font-family: monospace; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.6);">LG</span>
+    </div>
+    <div style="text-align: center;">
+      <p id="gestor-loader-text" style="color: #ffffff; font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.3px; margin: 0;">Cargando gestor...</p>
+      <p style="color: rgba(255,255,255,0.4); font-family: system-ui, -apple-system, sans-serif; font-size: 12px; margin: 4px 0 0 0;">UDI Posgrado</p>
+    </div>
+  </div>
+  <style>
+    @keyframes gestorSpin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+
   <header class="header" id="header">
     <div class="header__inner">
       <div class="header__brand">
@@ -16,7 +33,7 @@ const ADMIN_HTML = `
       <div class="header__actions">
         <a href="/admin/programas" class="btn btn--outline" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">← Catálogo de Programas</a>
         
-        <button class="btn btn--outline" id="btn-logout" onclick="fetch('/api/gestor-auth', {method:'DELETE'}).then(function(){ window.location.href='/gestor-landings/login'; })" style="border-color: rgba(239,68,68,0.4); color: #f87171; cursor: pointer;">Cerrar Sesión</button>
+        <button class="btn btn--outline" id="btn-logout" onclick="(function(){ const l=document.getElementById('gestor-global-loader'); const t=document.getElementById('gestor-loader-text'); if(l){if(t)t.textContent='Cerrando sesión...'; l.style.display='flex';} fetch('/api/gestor-auth', {method:'DELETE'}).then(function(){ window.location.href='/gestor-landings/login'; }); })()" style="border-color: rgba(239,68,68,0.4); color: #f87171; cursor: pointer;">Cerrar Sesión</button>
         <button class="btn btn--outline" id="btn-generate-all">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           Generar todas
