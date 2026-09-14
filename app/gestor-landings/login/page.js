@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
 function LoginForm() {
@@ -9,7 +9,6 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleSubmit = async (e) => {
@@ -28,8 +27,8 @@ function LoginForm() {
 
       if (result.success) {
         const slug = searchParams.get('slug');
-        const dest = slug ? `/gestor-landings?slug=${slug}` : '/gestor-landings';
-        router.push(dest);
+        const dest = slug ? `/gestor-landings?slug=${encodeURIComponent(slug)}` : '/gestor-landings';
+        window.location.href = dest;
       } else {
         setError(result.error || 'Credenciales incorrectas');
       }
