@@ -55,9 +55,11 @@
 
 
   function showToast(message, type = 'success') {
-    toast.textContent = message;
-    toast.className = `toast toast--${type} is-visible`;
-    setTimeout(() => toast.classList.remove('is-visible'), 3000);
+    const t = document.querySelector('#toast');
+    if (!t) return;
+    t.textContent = message;
+    t.className = `toast toast--${type} is-visible`;
+    setTimeout(() => t.classList.remove('is-visible'), 3000);
   }
 
   // ---------- API helpers ----------
@@ -774,5 +776,10 @@
     }
   }
 
-  if (document.readyState === 'complete' || document.readyState === 'interactive') { init(); } else { document.addEventListener('DOMContentLoaded', init); }
+  // Defer to ensure React's dangerouslySetInnerHTML DOM is mounted
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(init, 0));
+  } else {
+    setTimeout(init, 0);
+  }
 })();
