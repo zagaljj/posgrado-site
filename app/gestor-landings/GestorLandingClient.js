@@ -16,7 +16,7 @@ const ADMIN_HTML = `
       <div class="header__actions">
         <a href="/admin/programas" class="btn btn--outline" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">← Catálogo de Programas</a>
         
-        <button class="btn btn--outline" id="btn-logout" style="border-color: rgba(239,68,68,0.4); color: #f87171;">Cerrar Sesión</button>
+        <button class="btn btn--outline" id="btn-logout" onclick="fetch('/api/gestor-auth', {method:'DELETE'}).then(function(){ window.location.href='/gestor-landings/login'; })" style="border-color: rgba(239,68,68,0.4); color: #f87171; cursor: pointer;">Cerrar Sesión</button>
         <button class="btn btn--outline" id="btn-generate-all">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           Generar todas
@@ -251,7 +251,7 @@ const ADMIN_HTML = `
 export default function GestorLandingsPage() {
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = '/adminlanding/js/admin.js';
+    script.src = '/adminlanding/js/admin.js?v=' + Date.now();
     script.async = true;
     document.body.appendChild(script);
     return () => {

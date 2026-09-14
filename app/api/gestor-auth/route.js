@@ -15,7 +15,7 @@ export async function POST(req) {
       cookieStore.set(SESSION_COOKIE, SESSION_SECRET, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'lax',
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: '/',
       });
@@ -31,6 +31,13 @@ export async function POST(req) {
 
 export async function DELETE() {
   const cookieStore = await cookies();
+  cookieStore.set(SESSION_COOKIE, '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 0,
+    path: '/',
+  });
   cookieStore.delete(SESSION_COOKIE);
   return NextResponse.json({ success: true });
 }
