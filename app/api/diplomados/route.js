@@ -9,7 +9,7 @@ export async function GET() {
     fechaInicio: data.caracteristicas?.fechaInicio || data.fechaInicio || '',
     modulesCount: (data.modules || data.modulos || []).length,
     docentesCount: (data.teachers || data.docentes || []).length,
-    hasOutput: true,
+    hasOutput: data.hasOutput !== undefined ? data.hasOutput : true,
   }));
 
   return Response.json(result);

@@ -14,6 +14,7 @@ const EMPTY_FORM = {
 export default function AdminProgramas() {
   const [programas, setProgramas] = useState([]);
   const [areas, setAreas] = useState([]);
+  const [landingSlugs, setLandingSlugs] = useState(new Set());
   const [showModal, setShowModal] = useState(false);
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -25,11 +26,21 @@ export default function AdminProgramas() {
   useEffect(() => {
     fetchProgramas();
     fetchAreas();
+    fetchLandings();
   }, []);
 
   const fetchAreas = async () => {
     const { data } = await supabase.from('areas').select('*').order('nombre');
     if (data) setAreas(data);
+  };
+
+  const fetchLandings = async () => {
+    try {
+      const { data } = await supabase.from('landings').select('slug');
+      if (data) {
+        setLandingSlugs(new Set(data.map(l => l.slug)));
+      }
+    } catch (e) {}
   };
 
   const fetchProgramas = async () => {
@@ -41,7 +52,7 @@ export default function AdminProgramas() {
     if (error) {
       console.error("Error fetching programas:", error);
     } else {
-      setProgramas(data);
+      setProgramas(data || []);
     }
   };
 
@@ -65,7 +76,7 @@ export default function AdminProgramas() {
   const uploadFile = async (file, folder) => {
     const fileExt = file.name.split('.').pop();
     const fileName = `${folder}/${Date.now()}.${fileExt}`;
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from('posgrado-assets')
       .upload(fileName, file, { cacheControl: '3600', upsert: false });
 
@@ -96,18 +107,20 @@ export default function AdminProgramas() {
         clean.brochure_url = await uploadFile(brochureFile, 'brochures');
       }
 
+      let targetSlug = clean.slug;
       if (editId) {
         const { error } = await supabase.from('programas').update(clean).eq('id', editId);
         if (error) throw error;
       } else {
-        const slug = clean.titulo.toLowerCase()
+        targetSlug = clean.titulo.toLowerCase()
           .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
           .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-        const { error } = await supabase.from('programas').insert({ ...clean, slug });
+        const { error } = await supabase.from('programas').insert({ ...clean, slug: targetSlug });
         if (error) throw error;
       }
 
       await fetchProgramas();
+      await fetchLandings();
       setShowModal(false);
       resetForm();
     } catch (error) {
@@ -160,12 +173,20 @@ export default function AdminProgramas() {
             <span className="text-udi-gray font-light italic">Programas</span>
           </h1>
         </div>
-        <button
-          onClick={() => { resetForm(); setShowModal(true); }}
-          className="bg-udi-navy text-white px-8 py-4 font-montserrat font-black text-[11px] tracking-[3px] uppercase hover:shadow-xl transition-all"
-        >
-          + Nuevo Programa
-        </button>
+        <div className="flex items-center gap-4">
+          <a
+            href="/gestor-landings"
+            className="border border-udi-navy text-udi-navy px-6 py-4 font-montserrat font-bold text-[11px] tracking-[2px] uppercase hover:bg-udi-navy hover:text-white transition-all flex items-center gap-2 rounded-sm"
+          >
+            🚀 Gestor de Landings
+          </a>
+          <button
+            onClick={() => { resetForm(); setShowModal(true); }}
+            className="bg-udi-navy text-white px-8 py-4 font-montserrat font-black text-[11px] tracking-[3px] uppercase hover:shadow-xl transition-all rounded-sm"
+          >
+            + Nuevo Programa
+          </button>
+        </div>
       </div>
 
       {/* Table */}
@@ -179,55 +200,75 @@ export default function AdminProgramas() {
               <th className="p-5 font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-navy">Área</th>
               <th className="p-5 font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-navy">Modalidad</th>
               <th className="p-5 font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-navy">Precio</th>
-              <th className="p-5 font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-navy">Estado Acad.</th>
+              <th className="p-5 font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-navy">Landing Page</th>
               <th className="p-5 font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-navy">Publicación</th>
-              <th className="p-5 font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-navy">Brochure</th>
               <th className="p-5 font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-navy text-right">Acción</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-udi-light">
-            {programas.map((p) => (
-              <tr key={p.id} className="hover:bg-udi-light/40 transition-colors">
-                <td className="p-4">
-                  <div className="w-12 h-14 rounded-sm overflow-hidden bg-udi-light border border-udi-border flex-shrink-0">
-                    {p.arte_url ? (
-                      <img src={p.arte_url} alt={p.titulo} className="w-full h-full object-cover" />
+            {programas.map((p) => {
+              const hasLanding = landingSlugs.has(p.slug);
+              return (
+                <tr key={p.id} className="hover:bg-udi-light/40 transition-colors">
+                  <td className="p-4">
+                    <div className="w-12 h-14 rounded-sm overflow-hidden bg-udi-light border border-udi-border flex-shrink-0">
+                      {p.arte_url ? (
+                        <img src={p.arte_url} alt={p.titulo} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-base opacity-20">📷</div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <div className="font-poppins text-sm font-bold text-udi-text max-w-[260px]">{p.titulo}</div>
+                    {p.destacado && <span className="text-[9px] font-poppins text-amber-600 font-bold uppercase tracking-[1px]">⭐ Destacado</span>}
+                  </td>
+                  <td className="p-4 font-poppins text-xs text-udi-gray font-medium">{p.tipo || "Diplomado"}</td>
+                  <td className="p-4 font-poppins text-xs text-udi-navy font-semibold">{p.areas?.nombre}</td>
+                  <td className="p-4 font-poppins text-xs text-udi-gray">{p.modalidad}</td>
+                  <td className="p-4 font-poppins text-sm font-bold text-udi-navy">Bs. {p.precio.toLocaleString()}</td>
+                  <td className="p-4">
+                    {hasLanding ? (
+                      <div className="flex items-center gap-1.5">
+                        <a 
+                          href={`/${p.slug}`} 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-[2px] font-poppins text-[10px] font-semibold hover:bg-emerald-100 transition-colors" 
+                          title="Ver Landing Pública"
+                        >
+                          🟢 Ver
+                        </a>
+                        <a 
+                          href={`/gestor-landings?slug=${p.slug}`} 
+                          className="inline-flex items-center gap-1 px-2.5 py-1 bg-udi-navy text-white rounded-[2px] font-poppins text-[10px] font-semibold hover:bg-udi-navy/80 transition-colors" 
+                          title="Editar Contenidos de la Landing"
+                        >
+                          ✏️ Editar
+                        </a>
+                      </div>
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-base opacity-20">📷</div>
+                      <a 
+                        href={`/gestor-landings?slug=${p.slug}`} 
+                        className="inline-flex items-center gap-1 px-2.5 py-1 bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-[2px] font-poppins text-[10px] font-semibold hover:bg-indigo-100 transition-colors" 
+                        title="Crear y Personalizar Landing"
+                      >
+                        ✨ Crear Landing
+                      </a>
                     )}
-                  </div>
-                </td>
-                <td className="p-4">
-                  <div className="font-poppins text-sm font-bold text-udi-text max-w-[260px]">{p.titulo}</div>
-                  {p.destacado && <span className="text-[9px] font-poppins text-amber-600 font-bold uppercase tracking-[1px]">⭐ Destacado</span>}
-                </td>
-                <td className="p-4 font-poppins text-xs text-udi-gray font-medium">{p.tipo || "Diplomado"}</td>
-                <td className="p-4 font-poppins text-xs text-udi-navy font-semibold">{p.areas?.nombre}</td>
-                <td className="p-4 font-poppins text-xs text-udi-gray">{p.modalidad}</td>
-                <td className="p-4 font-poppins text-sm font-bold text-udi-navy">Bs. {p.precio.toLocaleString()}</td>
-                <td className="p-4">
-                  <span className={`px-2 py-1 rounded-[2px] font-poppins text-[9px] font-bold uppercase tracking-[1px] ${p.estado_academico === 'Disponible' ? 'bg-green-100 text-green-700' : p.estado_academico === 'Completo' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'}`}>
-                    {p.estado_academico}
-                  </span>
-                </td>
-                <td className="p-4">
-                  <span className={`px-2 py-1 rounded-[2px] font-poppins text-[9px] font-bold uppercase tracking-[1px] ${p.activo ? "bg-udi-navy/10 text-udi-navy" : "bg-udi-gray/10 text-udi-gray"}`}>
-                    {p.activo ? "Activo" : "Inactivo"}
-                  </span>
-                </td>
-                <td className="p-4">
-                  {p.brochure_url ? (
-                    <span className="text-xl" title="PDF Disponible">📄</span>
-                  ) : (
-                    <span className="opacity-20 text-xl">🚫</span>
-                  )}
-                </td>
-                <td className="p-4 text-right">
-                  <button onClick={() => handleEdit(p)} className="p-2 opacity-40 hover:opacity-100 transition-opacity" title="Editar">✏️</button>
-                  <button onClick={() => handleDelete(p.id)} className="p-2 opacity-30 hover:opacity-100 transition-opacity text-red-600" title="Eliminar">🗑️</button>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="p-4">
+                    <span className={`px-2 py-1 rounded-[2px] font-poppins text-[9px] font-bold uppercase tracking-[1px] ${p.activo ? "bg-udi-navy/10 text-udi-navy" : "bg-udi-gray/10 text-udi-gray"}`}>
+                      {p.activo ? "Activo" : "Inactivo"}
+                    </span>
+                  </td>
+                  <td className="p-4 text-right">
+                    <button onClick={() => handleEdit(p)} className="p-2 opacity-40 hover:opacity-100 transition-opacity" title="Editar Programa">✏️</button>
+                    <button onClick={() => handleDelete(p.id)} className="p-2 opacity-30 hover:opacity-100 transition-opacity text-red-600" title="Eliminar">🗑️</button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -237,81 +278,78 @@ export default function AdminProgramas() {
         <div className="fixed inset-0 bg-udi-navy/90 backdrop-blur-sm z-[2000] flex items-center justify-center p-6 overflow-y-auto">
           <div className="bg-white w-full max-w-[760px] my-auto rounded-sm shadow-2xl">
             <div className="flex items-center justify-between p-8 border-b border-udi-border">
-              <h2 className="font-montserrat font-black text-xl text-udi-navy uppercase tracking-[1px]">
-                {editId ? "Editar Programa" : "Nuevo Programa"}
-              </h2>
+              <div>
+                <h2 className="font-montserrat font-black text-xl text-udi-navy uppercase tracking-[1px]">
+                  {editId ? "Editar Programa" : "Nuevo Programa"}
+                </h2>
+                <p className="font-poppins text-xs text-udi-gray mt-1">Ficha académica institucional en el catálogo de Posgrado</p>
+              </div>
               <button onClick={() => { setShowModal(false); resetForm(); }} className="text-udi-gray hover:text-udi-navy text-xl" disabled={loading}>✕</button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-8 space-y-8">
+              {/* Landing Direct Link Banner (when editing existing) */}
+              {editId && form.slug && (
+                <div className="p-4 bg-indigo-50/70 border border-indigo-200 rounded-sm flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-montserrat font-bold text-xs uppercase tracking-[1px] text-indigo-950">🎨 Landing Page de Conversión</p>
+                    <p className="font-poppins text-xs text-indigo-700/80">Personalizá el hero, módulos, fotos de docentes y horarios para marketing.</p>
+                  </div>
+                  <a 
+                    href={`/gestor-landings?slug=${form.slug}`} 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="px-4 py-2.5 bg-indigo-900 text-white font-montserrat font-bold text-[10px] uppercase tracking-[2px] rounded-sm hover:bg-indigo-950 transition-all flex-shrink-0"
+                  >
+                    Abrir Editor →
+                  </a>
+                </div>
+              )}
+
               {/* Arte Upload */}
               <div className="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-8 items-start">
                 <div className="flex flex-col gap-2">
-                  <label className="font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-gray">
-                    Título del Programa *
-                  </label>
+                  <label className="font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-gray">Título del Programa *</label>
                   <input
-                    required type="text" value={form.titulo}
+                    type="text" required value={form.titulo}
                     onChange={e => setForm({ ...form, titulo: e.target.value })}
-                    className="border border-udi-border px-4 py-3 font-poppins text-sm outline-none focus:border-udi-navy w-full"
-                    placeholder="Ej: Diplomado en Derecho Empresarial"
+                    className="border border-udi-border px-4 py-3 font-poppins text-sm outline-none focus:border-udi-navy transition-colors font-bold text-udi-navy"
+                    placeholder="Ej: Full Stack Developer"
                   />
-                  <div className="mt-4">
-                    <label className="font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-gray block mb-2">
-                      Arte / Flyer del Programa
-                    </label>
-                    <label className="cursor-pointer border-2 border-dashed border-udi-border hover:border-udi-navy transition-colors p-4 flex flex-col items-center gap-2 rounded-sm">
-                      <span className="text-2xl">🖼️</span>
-                      <span className="font-poppins text-xs text-udi-gray">Clic para subir imagen (JPG, PNG)</span>
-                      <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
-                    </label>
-                  </div>
                 </div>
-                {/* Arte Preview */}
+
                 <div className="flex flex-col gap-2">
-                  <label className="font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-gray">Vista Previa</label>
-                  <div className="w-[200px] aspect-[4/5] bg-udi-light border border-udi-border rounded-sm overflow-hidden flex items-center justify-center relative">
+                  <label className="font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-gray">Arte Oficial (Portada)</label>
+                  <label className="border border-dashed border-udi-border h-24 flex flex-col items-center justify-center cursor-pointer hover:border-udi-navy transition-colors relative overflow-hidden bg-udi-light/30">
                     {artePreview ? (
                       <img src={artePreview} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="text-center opacity-20">
-                        <div className="text-4xl mb-2">🖼️</div>
-                        <div className="font-poppins text-[9px] uppercase tracking-[1px]">Sin arte</div>
-                      </div>
+                      <span className="font-poppins text-[10px] text-udi-gray uppercase tracking-[1px]">Subir Imagen</span>
                     )}
-                  </div>
-                  {artePreview && (
-                    <button type="button" onClick={() => { setForm(f => ({...f, arte_url: ""})); setArtePreview(""); setArteFile(null); }}
-                      className="text-[10px] font-poppins text-red-500 hover:text-red-700 text-center mt-1">
-                      × Quitar imagen
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Brochure Upload */}
-              <div className="bg-udi-light/30 p-6 rounded-sm border border-udi-border">
-                <label className="font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-gray block mb-3">
-                  Documento Brochure (PDF)
-                </label>
-                <div className="flex items-center gap-4">
-                  <label className="flex-1 cursor-pointer bg-white border border-udi-border hover:border-udi-navy transition-colors p-4 flex items-center justify-center gap-3 rounded-sm">
-                    <span className="text-xl">📄</span>
-                    <span className="font-poppins text-xs text-udi-gray">
-                      {brochureFile ? `Archivo listo para subir: ${brochureFile.name}` : (form.brochure_url ? "Archivo PDF actual cargado" : "Clic para subir Brochure PDF")}
-                    </span>
-                    <input type="file" accept="application/pdf" onChange={handleBrochureChange} className="hidden" />
+                    <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                   </label>
-                  {(brochureFile || form.brochure_url) && (
-                    <button type="button" onClick={() => { setForm(f => ({...f, brochure_url: ""})); setBrochureFile(null); }}
-                      className="bg-red-50 text-red-500 p-4 rounded-sm border border-red-100 hover:bg-red-100 transition-colors">
-                      ✕
-                    </button>
+                </div>
+              </div>
+
+              {/* Brochure PDF Upload */}
+              <div className="flex flex-col gap-2">
+                <label className="font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-gray">Brochure Informativo (PDF)</label>
+                <div className="flex items-center gap-4">
+                  <input 
+                    type="file" 
+                    accept="application/pdf" 
+                    onChange={handleBrochureChange}
+                    className="border border-udi-border px-4 py-2 font-poppins text-xs outline-none focus:border-udi-navy w-full"
+                  />
+                  {form.brochure_url && (
+                    <a href={form.brochure_url} target="_blank" rel="noreferrer" className="text-xs text-udi-navy underline flex-shrink-0 font-medium">
+                      Ver actual 📄
+                    </a>
                   )}
                 </div>
               </div>
 
-              {/* Tipo, Area, Modalidad */}
+              {/* Tipo, Área, Modalidad */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-gray">Tipo *</label>
@@ -366,7 +404,7 @@ export default function AdminProgramas() {
               {/* Inicio */}
               <div className="flex flex-col gap-2">
                 <label className="font-montserrat font-bold text-[9px] tracking-[2px] uppercase text-udi-gray">Fecha de Inicio</label>
-                <input type="text" value={form.inicio} placeholder="Ej: Mayo 2025"
+                <input type="text" value={form.inicio} placeholder="Ej: Del 07 de Septiembre al 21 de Enero"
                   onChange={e => setForm({ ...form, inicio: e.target.value })}
                   className="border border-udi-border px-4 py-3 font-poppins text-sm outline-none focus:border-udi-navy" />
               </div>
@@ -414,11 +452,11 @@ export default function AdminProgramas() {
 
               <div className="flex gap-4 pt-4 border-t border-udi-border">
                 <button type="button" onClick={() => { setShowModal(false); resetForm(); }} disabled={loading}
-                  className="flex-1 border border-udi-border py-4 font-montserrat font-bold text-[11px] tracking-[2px] uppercase text-udi-gray hover:bg-udi-light transition-all">
+                  className="flex-1 border border-udi-border py-4 font-montserrat font-bold text-[11px] tracking-[2px] uppercase text-udi-gray hover:bg-udi-light transition-all rounded-sm">
                   Cancelar
                 </button>
                 <button type="submit" disabled={loading}
-                  className="flex-1 bg-udi-navy text-white py-4 font-montserrat font-black text-[11px] tracking-[3px] uppercase hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+                  className="flex-1 bg-udi-navy text-white py-4 font-montserrat font-black text-[11px] tracking-[3px] uppercase hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 rounded-sm">
                   {loading && <span className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>}
                   {editId ? "Guardar Cambios" : "Crear Programa"}
                 </button>

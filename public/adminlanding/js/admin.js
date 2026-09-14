@@ -623,8 +623,7 @@
     if (!saved) return;
 
     const targetSlug = currentSlug || slugVal;
-    const previewUrl = `/preview/${targetSlug}/index.html`;
-    window.open(previewUrl, '_blank');
+    window.open(`/${targetSlug}`, '_blank');
   }
 
   // ---------- Leads ----------
@@ -688,6 +687,9 @@
     $('#btn-new').addEventListener('click', () => openEditor(null));
     $('#btn-empty-new')?.addEventListener('click', () => openEditor(null));
     $('#btn-back').addEventListener('click', () => {
+      if (window.location.search) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
       showView(viewList);
       $('#ed-slug').disabled = false;
       loadDiplomados();
@@ -726,8 +728,14 @@
     // Upload dropzones
     initUploadDropzones();
 
-    // Initial load
-    loadDiplomados();
+    // Check if opened with ?slug= query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const slugParam = urlParams.get("slug");
+    if (slugParam) {
+      openEditor(slugParam);
+    } else {
+      loadDiplomados();
+    }
   }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') { init(); } else { document.addEventListener('DOMContentLoaded', init); }
