@@ -39,8 +39,10 @@ to need real migration given its size).
 non-synthetic lead:
 
 ```json
-{"diplomado":"Full Stack Developer","name":"Juan Perez","email":"juan.perez@example.com","phone":"+591 70123456","message":"Hola, quiero saber precios.","timestamp":"2026-07-28T15:10:44.887Z","receivedAt":"2026-07-28T15:10:44.976Z","ip":"::1"}
+{"diplomado":"Full Stack Developer","name":"[REDACTED]","email":"[REDACTED]","phone":"[REDACTED]","message":"Hola, quiero saber precios.","timestamp":"2026-07-28T15:10:44.887Z","receivedAt":"2026-07-28T15:10:44.976Z","ip":"::1"}
 ```
+
+(PII redacted here — the real values are already in `data/landings/_leads.json`, which this doc should not duplicate. See that file directly if you need the actual contact info for the backfill.)
 
 Per spec Slice 6 / design §4b, this file cannot simply be deleted — it must
 be backfilled into the Supabase `leads` table introduced by Task 4
