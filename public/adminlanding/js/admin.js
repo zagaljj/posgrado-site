@@ -597,7 +597,6 @@
 
   // ---------- Save ----------
   async function saveDiplomado() {
-    showGlobalLoader("Guardando diplomado...");
     const data = collectEditorData();
 
     if (!data.slug || !data.title) {
@@ -605,6 +604,7 @@
       return false;
     }
 
+    showGlobalLoader("Guardando diplomado...");
     try {
       const result = await api('/api/diplomados', {
         method: 'POST',
@@ -623,6 +623,8 @@
     } catch (err) {
       showToast('Error al guardar diplomado', 'error');
       return false;
+    } finally {
+      hideGlobalLoader();
     }
   }
 
