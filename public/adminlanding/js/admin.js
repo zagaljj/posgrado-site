@@ -462,7 +462,7 @@
         fotoValue.value = result.filename;
         showToast('Foto subida');
       } else {
-        showToast('Error al subir foto', 'error');
+        showToast(result.error || 'Error al subir foto', 'error');
       }
     });
 
@@ -517,23 +517,25 @@
     });
 
     async function handleFile(file) {
-      // 1. Immediate client preview (base64 fallback)
+      const previousValue = hidden.value;
+
+      // 1. Immediate client preview only — NOT saved into the form until the
+      // upload is confirmed below, so a rejected upload can't sneak through.
       const reader = new FileReader();
       reader.onload = (e) => {
-        const dataUrl = e.target.result;
-        preview.src = dataUrl;
+        preview.src = e.target.result;
         preview.style.display = '';
         if (placeholder) placeholder.style.display = 'none';
-        hidden.value = dataUrl;
       };
       reader.readAsDataURL(file);
 
-      // 2. Upload to API
+      // 2. Upload to API — this is what actually populates the field the form saves.
       try {
         const slug = $('#ed-slug').value.trim() || 'temp';
         const formData = new FormData();
         formData.append('hero', file);
         formData.append('image', file);
+        formData.append('photo', file);
         formData.append('slug', slug);
 
         const res = await fetch(apiEndpoint, { method: 'POST', body: formData });
@@ -541,9 +543,13 @@
         if (result.success && result.filename) {
           hidden.value = result.filename;
           showToast('Imagen subida correctamente');
+        } else {
+          hidden.value = previousValue;
+          showToast(result.error || 'No se pudo subir la imagen', 'error');
         }
       } catch (err) {
-        showToast('Imagen cargada en previsualización');
+        hidden.value = previousValue;
+        showToast('No se pudo subir la imagen', 'error');
       }
     }
   }
