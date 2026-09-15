@@ -741,26 +741,6 @@
     $('#btn-add-teacher')?.addEventListener('click', () => addTeacher());
     $('#btn-add-schedule')?.addEventListener('click', () => addScheduleBlock());
 
-    // Generate all
-    $('#btn-generate-all').addEventListener('click', async () => {
-      const btn = $('#btn-generate-all');
-      btn.disabled = true;
-      btn.textContent = 'Generando...';
-      const result = await api('/api/generate', { method: 'POST' });
-      if (result.success) {
-        showToast('Todas las landings generadas');
-        loadDiplomados();
-      } else {
-        hideGlobalLoader();
-      showToast('Error: ' + (result.error || ''), 'error');
-      }
-      btn.disabled = false;
-      btn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        Generar todas
-      `;
-    });
-
     // Upload dropzones
     initUploadDropzones();
 
