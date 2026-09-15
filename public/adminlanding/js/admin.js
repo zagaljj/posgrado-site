@@ -518,6 +518,9 @@
 
     async function handleFile(file) {
       const previousValue = hidden.value;
+      const previousPreviewSrc = preview.src;
+      const previousPreviewDisplay = preview.style.display;
+      const previousPlaceholderDisplay = placeholder ? placeholder.style.display : null;
 
       // 1. Immediate client preview only — NOT saved into the form until the
       // upload is confirmed below, so a rejected upload can't sneak through.
@@ -545,10 +548,16 @@
           showToast('Imagen subida correctamente');
         } else {
           hidden.value = previousValue;
+          preview.src = previousPreviewSrc;
+          preview.style.display = previousPreviewDisplay;
+          if (placeholder) placeholder.style.display = previousPlaceholderDisplay;
           showToast(result.error || 'No se pudo subir la imagen', 'error');
         }
       } catch (err) {
         hidden.value = previousValue;
+        preview.src = previousPreviewSrc;
+        preview.style.display = previousPreviewDisplay;
+        if (placeholder) placeholder.style.display = previousPlaceholderDisplay;
         showToast('No se pudo subir la imagen', 'error');
       }
     }
