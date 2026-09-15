@@ -103,7 +103,7 @@
           <div class="dip-card__actions">
             <button class="btn btn--small btn--outline btn-edit" data-slug="${d.slug}">Editar</button>
             <button class="btn btn--small btn--success btn-generate" data-slug="${d.slug}">Generar</button>
-            ${d.hasOutput ? `<a class="btn btn--small btn--ghost" href="/preview/${d.slug}/index.html" target="_blank">Ver</a>` : ''}
+            ${d.hasOutput ? `<a class="btn btn--small btn--ghost" href="/${d.slug}" target="_blank">Ver</a>` : ''}
             <button class="btn btn--small btn--danger btn-delete" data-slug="${d.slug}">Eliminar</button>
           </div>
         </div>
@@ -122,7 +122,7 @@
     diplomadosGrid.querySelectorAll('.btn-generate').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        window.open(`/preview/${btn.dataset.slug}/index.html`, '_blank');
+        window.open(`/${btn.dataset.slug}`, '_blank');
       });
     });
 
