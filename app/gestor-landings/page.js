@@ -5,7 +5,9 @@ import GestorLandingClient from './GestorLandingClient';
 export const dynamic = 'force-dynamic';
 
 const SESSION_COOKIE = 'gestor_session';
-const SESSION_SECRET = process.env.GESTOR_SESSION_SECRET || 'udi-gestor-2025';
+// See lib/gestor-session.js — fail closed in production when unset.
+const SESSION_SECRET = process.env.GESTOR_SESSION_SECRET
+  || (process.env.NODE_ENV === 'production' ? undefined : 'udi-gestor-2025');
 
 export default async function GestorLandingsPage(props) {
   const searchParams = await props.searchParams;
