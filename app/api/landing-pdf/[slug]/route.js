@@ -14,6 +14,8 @@ export async function GET(req, { params }) {
     return new Response(`Diplomado "${slug}" no encontrado`, { status: 404 });
   }
 
+  const origin = new URL(req.url).origin;
+
   let browser;
   try {
     const chromium = (await import('@sparticuz/chromium')).default;
@@ -27,7 +29,12 @@ export async function GET(req, { params }) {
     });
 
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: 'networkidle0' });
+    // Navigate to the real landing URL instead of setContent(html) so
+    // relative asset paths (CSS, fonts, icons under /assets, /uploads)
+    // resolve against a real origin. setContent has no page origin, so
+    // every relative reference silently fails and the PDF renders unstyled.
+    await page.goto(`${origin}/${slug}`, { waitUntil: 'networkidle0' });
+    await page.emulateMediaType('screen');
     const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
 
     return new Response(pdfBuffer, {
