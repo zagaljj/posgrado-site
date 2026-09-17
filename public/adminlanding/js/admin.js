@@ -104,6 +104,7 @@
             <button class="btn btn--small btn--outline btn-edit" data-slug="${d.slug}">Editar</button>
             <button class="btn btn--small btn--success btn-generate" data-slug="${d.slug}">Generar</button>
             ${d.hasOutput ? `<a class="btn btn--small btn--ghost" href="/${d.slug}" target="_blank">Ver</a>` : ''}
+            ${d.hasOutput ? `<button class="btn btn--small btn--outline btn-pdf" data-slug="${d.slug}">Descargar PDF</button>` : ''}
             <button class="btn btn--small btn--danger btn-delete" data-slug="${d.slug}">Eliminar</button>
           </div>
         </div>
@@ -123,6 +124,13 @@
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         window.open(`/${btn.dataset.slug}`, '_blank');
+      });
+    });
+
+    diplomadosGrid.querySelectorAll('.btn-pdf').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.location.href = `/api/landing-pdf/${btn.dataset.slug}`;
       });
     });
 

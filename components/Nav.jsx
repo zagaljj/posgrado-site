@@ -28,7 +28,7 @@ const Nav = () => {
   const links = [
     { href: "/", label: "Inicio" },
     { href: "/catalogo", label: "Diplomados" },
-    { href: "/postitulos", label: "Postítulos" },
+    { href: "/postitulos", label: "Postítulo y expertos" },
     { href: "/cursos", label: "Cursos y Talleres" },
     { href: "/contacto", label: "Contacto" },
     { href: "http://www.udi.edu.bo", label: "UDI", external: true },

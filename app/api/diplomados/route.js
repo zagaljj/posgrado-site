@@ -29,7 +29,14 @@ export async function POST(req) {
       return Response.json({ error: 'Missing slug or title' }, { status: 400 });
     }
 
-    await saveDiplomado(data);
+    const result = await saveDiplomado(data);
+    if (!result || result.success === false) {
+      return Response.json(
+        { success: false, error: (result && result.error) || 'No se pudo guardar el diplomado.' },
+        { status: 500 }
+      );
+    }
+
     return Response.json({ success: true, slug: data.slug });
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });
