@@ -3,14 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const DiplomaCard = ({ d }) => {
+const DiplomaCard = ({ d, hidePrice = false }) => {
   const [hov, setHov] = useState(false);
 
   const ac = d.areas?.color || "#002744";
 
   return (
     <Link
-      href={`/diplomados/${d.slug}`}
+      href={`/${d.slug}`}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       className="group block border-b border-udi-border py-7 grid grid-cols-[3px_1fr_auto] gap-0 md:gap-7 items-center transition-colors hover:bg-udi-light"
@@ -56,10 +56,12 @@ const DiplomaCard = ({ d }) => {
       </div>
 
       <div className="text-right min-w-[140px] pr-4 md:pr-2 hidden sm:block">
-        <div className="font-montserrat font-extrabold text-[22px] text-udi-navy leading-none">
-          {d.estadoAcademico === "Próximamente" ? "---" : `Bs. ${d.precio.toLocaleString()}`}
-        </div>
-        <div className={`font-poppins text-[11px] mt-1 ${d.estadoAcademico === "Disponible" ? "text-[#27ae60]" : "text-udi-gray"}`}>
+        {!hidePrice && (
+          <div className="font-montserrat font-extrabold text-[22px] text-udi-navy leading-none">
+            {d.estadoAcademico === "Próximamente" ? "---" : `Bs. ${d.precio.toLocaleString()}`}
+          </div>
+        )}
+        <div className={`font-poppins text-[11px] ${hidePrice ? "" : "mt-1"} ${d.estadoAcademico === "Disponible" ? "text-[#27ae60]" : "text-udi-gray"}`}>
           {d.estadoAcademico === "Disponible" ? "Cupos disponibles" : d.estadoAcademico}
         </div>
         <div className="font-poppins text-[11px] font-semibold text-udi-navy mt-2 tracking-[1px]">

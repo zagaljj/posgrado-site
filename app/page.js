@@ -162,7 +162,7 @@ export default async function Home() {
             <div className="bg-white rounded-sm overflow-hidden border border-udi-border">
               {destacados && destacados.length > 0 ? (
                 destacados.map((d) => (
-                  <DiplomaCard key={d.id} d={d} />
+                  <DiplomaCard key={d.id} d={d} hidePrice />
                 ))
               ) : (
                 <div className="p-10 text-center font-poppins text-sm text-udi-gray">No hay programas destacados disponibles.</div>
