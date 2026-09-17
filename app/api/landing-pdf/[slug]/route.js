@@ -28,6 +28,7 @@ export async function GET(req, { params }) {
       headless: chromium.headless,
     });
 
+    const page = await browser.newPage();
     // Match the landing's own desktop container width (max-w-[1280px])
     // so the layout renders the same as it does for a real visitor.
     await page.setViewport({ width: 1280, height: 1024 });
