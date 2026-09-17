@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  outputFileTracingIncludes: {
+    '/api/landing-pdf/*': ['./node_modules/@sparticuz/chromium/bin/**/*'],
+  },
 };
 
 export default nextConfig;
