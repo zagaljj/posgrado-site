@@ -1,4 +1,3 @@
-import { PDFDocument } from 'pdf-lib';
 import { renderLandingPage } from '../../../../lib/landing-renderer';
 import { requireGestorSession } from '../../../../lib/gestor-session';
 
@@ -43,26 +42,31 @@ export async function GET(req, { params }) {
     // The interactive lead-capture form doesn't make sense in a static PDF
     // (nobody can submit it) — keep only the real contact details next to
     // it and let that column take the full width.
+    //
+    // page.pdf({width, height}) also re-derives the CSS viewport from the
+    // PDF page box, so the hero's `vh`-based min-height resolves against
+    // the whole document height instead of the real viewport, blowing the
+    // hero up over the sections below it. Pin it to a fixed px value
+    // (computed from the real viewport) so it's immune to that.
     await page.evaluate(() => {
       document.querySelector('.contacto__form-wrapper')?.remove();
       document.querySelector('.contacto__info-wrapper')?.style.setProperty('grid-column', '1 / -1');
+
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        const style = document.createElement('style');
+        style.textContent = `.hero { min-height: ${window.innerHeight}px !important; }`;
+        document.head.appendChild(style);
+      }
     });
 
-    // page.pdf({width, height}) re-derives the CSS viewport from the PDF
-    // page box, so `vh`-based rules (the hero uses `min-height: 90vh`)
-    // resolve against the whole document height instead of the real
-    // viewport, blowing the hero section up over the sections below it.
-    // A full-page screenshot renders with the real 1280x1024 viewport
-    // (matching what a visitor sees) and has no such print-layout quirks,
-    // so capture that and wrap it in a single-page PDF instead of using
-    // Puppeteer's own PDF pagination.
-    const screenshot = await page.screenshot({ type: 'jpeg', quality: 92, fullPage: true });
-
-    const pdfDoc = await PDFDocument.create();
-    const jpgImage = await pdfDoc.embedJpg(screenshot);
-    const pdfPage = pdfDoc.addPage([jpgImage.width, jpgImage.height]);
-    pdfPage.drawImage(jpgImage, { x: 0, y: 0, width: jpgImage.width, height: jpgImage.height });
-    const pdfBuffer = await pdfDoc.save();
+    const contentHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+    const pdfBuffer = await page.pdf({
+      width: '1280px',
+      height: `${contentHeight}px`,
+      printBackground: true,
+      pageRanges: '1',
+    });
 
     return new Response(pdfBuffer, {
       status: 200,
