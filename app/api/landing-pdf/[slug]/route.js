@@ -40,6 +40,14 @@ export async function GET(req, { params }) {
     await page.goto(`${origin}/${slug}`, { waitUntil: 'networkidle0' });
     await page.emulateMediaType('screen');
 
+    // The interactive lead-capture form doesn't make sense in a static PDF
+    // (nobody can submit it) — keep only the real contact details next to
+    // it and let that column take the full width.
+    await page.evaluate(() => {
+      document.querySelector('.contacto__form-wrapper')?.remove();
+      document.querySelector('.contacto__info-wrapper')?.style.setProperty('grid-column', '1 / -1');
+    });
+
     // page.pdf({width, height}) re-derives the CSS viewport from the PDF
     // page box, so `vh`-based rules (the hero uses `min-height: 90vh`)
     // resolve against the whole document height instead of the real
