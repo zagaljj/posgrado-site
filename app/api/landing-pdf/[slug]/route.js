@@ -1,3 +1,4 @@
+import { PDFDocument } from 'pdf-lib';
 import { renderLandingPage } from '../../../../lib/landing-renderer';
 import { requireGestorSession } from '../../../../lib/gestor-session';
 
@@ -39,18 +40,21 @@ export async function GET(req, { params }) {
     await page.goto(`${origin}/${slug}`, { waitUntil: 'networkidle0' });
     await page.emulateMediaType('screen');
 
-    // The landing is a single continuous scroll page, not print-paginated
-    // content: sections use fixed/parallax backgrounds and tall hero blocks
-    // that break apart (or bleed into each other) at arbitrary A4 page
-    // cuts. Render it as one tall PDF page sized to the actual content
-    // height instead, like a full-page capture, so nothing gets sliced.
-    const contentHeight = await page.evaluate(() => document.documentElement.scrollHeight);
-    const pdfBuffer = await page.pdf({
-      width: '1280px',
-      height: `${contentHeight}px`,
-      printBackground: true,
-      pageRanges: '1',
-    });
+    // page.pdf({width, height}) re-derives the CSS viewport from the PDF
+    // page box, so `vh`-based rules (the hero uses `min-height: 90vh`)
+    // resolve against the whole document height instead of the real
+    // viewport, blowing the hero section up over the sections below it.
+    // A full-page screenshot renders with the real 1280x1024 viewport
+    // (matching what a visitor sees) and has no such print-layout quirks,
+    // so capture that and wrap it in a single-page PDF instead of using
+    // Puppeteer's own PDF pagination.
+    const screenshot = await page.screenshot({ type: 'jpeg', quality: 92, fullPage: true });
+
+    const pdfDoc = await PDFDocument.create();
+    const jpgImage = await pdfDoc.embedJpg(screenshot);
+    const pdfPage = pdfDoc.addPage([jpgImage.width, jpgImage.height]);
+    pdfPage.drawImage(jpgImage, { x: 0, y: 0, width: jpgImage.width, height: jpgImage.height });
+    const pdfBuffer = await pdfDoc.save();
 
     return new Response(pdfBuffer, {
       status: 200,
